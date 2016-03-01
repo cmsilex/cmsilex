@@ -1,0 +1,13 @@
+{
+    "name": "cmsilex/cmsilex",
+    "authors": [
+        {
+            "name": "Leigh Murray",
+            "email": "leighmurray@cmsilex.com"
+        }
+    ],
+    "require": {
+        "silex/silex": "~2.0@dev",
+        "symfony/yaml": "^3.0"
+    }
+}
