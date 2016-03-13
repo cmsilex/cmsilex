@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "34e4258105b661a0dfe79758b13b8a20",
-    "content-hash": "1c7b11347f1191c2492a479ad62bf762",
+    "hash": "663b17bbc4086bc6d3ce0ea6b5f3333c",
+    "content-hash": "5d63a596e4520f94aff4a4a00ac0a36e",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -814,6 +814,51 @@
                 "microframework"
             ],
             "time": "2016-01-06 14:59:35"
+        },
+        {
+            "name": "silex/web-profiler",
+            "version": "v1.0.8",
+            "target-dir": "Silex/Provider",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/silexphp/Silex-WebProfiler.git",
+                "reference": "3b767e6c9006a542cac737474f02671bdf2909cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/silexphp/Silex-WebProfiler/zipball/3b767e6c9006a542cac737474f02671bdf2909cb",
+                "reference": "3b767e6c9006a542cac737474f02671bdf2909cb",
+                "shasum": ""
+            },
+            "require": {
+                "silex/silex": "~1.1",
+                "symfony/stopwatch": "~2.2",
+                "symfony/web-profiler-bundle": "~2.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Silex\\Provider\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "A WebProfiler for Silex",
+            "homepage": "http://silex.sensiolabs.org/",
+            "time": "2016-01-10 11:39:13"
         },
         {
             "name": "symfony/config",
@@ -1929,6 +1974,55 @@
             "time": "2016-02-26 06:06:39"
         },
         {
+            "name": "symfony/stopwatch",
+            "version": "v2.8.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/stopwatch.git",
+                "reference": "e3bc8e2a984f4382690a438c8bb650f3ffd71e73"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/e3bc8e2a984f4382690a438c8bb650f3ffd71e73",
+                "reference": "e3bc8e2a984f4382690a438c8bb650f3ffd71e73",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Stopwatch\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Stopwatch Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-01-03 15:33:41"
+        },
+        {
             "name": "symfony/translation",
             "version": "v3.0.3",
             "source": {
@@ -2206,6 +2300,64 @@
                 "dump"
             ],
             "time": "2016-02-13 09:23:44"
+        },
+        {
+            "name": "symfony/web-profiler-bundle",
+            "version": "v2.8.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/web-profiler-bundle.git",
+                "reference": "b99c74fd372244e5ebd947ee02ac9375f7e39169"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/b99c74fd372244e5ebd947ee02ac9375f7e39169",
+                "reference": "b99c74fd372244e5ebd947ee02ac9375f7e39169",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9",
+                "symfony/http-kernel": "~2.4|~3.0.0",
+                "symfony/routing": "~2.2|~3.0.0",
+                "symfony/twig-bridge": "~2.7|~3.0.0"
+            },
+            "require-dev": {
+                "symfony/config": "~2.2|~3.0.0",
+                "symfony/console": "~2.3|~3.0.0",
+                "symfony/dependency-injection": "~2.2|~3.0.0",
+                "symfony/stopwatch": "~2.2|~3.0.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Bundle\\WebProfilerBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony WebProfilerBundle",
+            "homepage": "https://symfony.com",
+            "time": "2016-02-23 07:42:06"
         },
         {
             "name": "symfony/yaml",

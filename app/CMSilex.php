@@ -5,12 +5,12 @@ namespace CMSilex;
 use CMSilex\ControllerProviders\AuthenticationController;
 use CMSilex\ServiceProviders\ORMServiceProvider;
 use Silex\Application;
-use Silex\Provider\CsrfServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
@@ -18,6 +18,8 @@ use Symfony\Component\Debug\ExceptionHandler;
 class CMSilex extends Application
 {
     use Application\FormTrait;
+    use Application\TwigTrait;
+    use Application\UrlGeneratorTrait;
 
     public function bootstrap()
     {
@@ -27,10 +29,11 @@ class CMSilex extends Application
         ErrorHandler::register();
         ExceptionHandler::register();
 
+        $app->register(new UrlGeneratorServiceProvider());
+
         $app->register(new ORMServiceProvider());
         $app->register(new SessionServiceProvider());
         $app->register(new SecurityServiceProvider());
-        $app->register(new CsrfServiceProvider());
 
         $app->register(new TranslationServiceProvider(), array(
             'locale_fallbacks' => array('en'),
@@ -38,7 +41,9 @@ class CMSilex extends Application
         ));
         $app->register(new ValidatorServiceProvider());
 
-        $app->register(new TwigServiceProvider());
+        $app->register(new TwigServiceProvider(),[
+            'twig.path' => __DIR__ . '/../resources/views'
+        ]);
         $app->register(new FormServiceProvider());
 
         $app['security.firewalls'] = array(
