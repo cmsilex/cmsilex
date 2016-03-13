@@ -19,7 +19,7 @@ class AuthenticationController implements ControllerProviderInterface
                 ->add('_username')
                 ->add('_password')
                 ->add('submit', SubmitType::class)
-                ->setAction($app->url('default_login_check'))
+                ->setAction($app->url('login_check'))
             ;
 
             $form = $builder->getForm()->createView();
