@@ -1,9 +1,0 @@
-893e4b,127.0.0.1,GET,http://localhost:8080/login,1457871658,,500
-f3b8c1,127.0.0.1,GET,http://localhost:8080/loginm,1457871675,,404
-a3b7cb,127.0.0.1,GET,http://localhost:8080/login,1457871721,,200
-088bdf,127.0.0.1,POST,http://localhost:8080/login_check,1457871725,,302
-00c238,127.0.0.1,GET,http://localhost:8080/login,1457871725,,200
-c3a736,127.0.0.1,GET,http://localhost:8080/admin,1457871736,,302
-b1f749,127.0.0.1,GET,http://localhost:8080/login,1457871737,,200
-0d094d,127.0.0.1,POST,http://localhost:8080/login_check,1457871741,,302
-e169b4,127.0.0.1,GET,http://localhost:8080/login,1457871741,,200
