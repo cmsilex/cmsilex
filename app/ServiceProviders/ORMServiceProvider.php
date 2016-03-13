@@ -5,12 +5,12 @@ namespace CMSilex\ServiceProviders;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
+use Silex\Application;
+use Silex\ServiceProviderInterface;
 
 class ORMServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $pimple)
+    public function register(Application $app)
     {
         $pimple['orm.paths'] = function () {
             return [
@@ -24,15 +24,20 @@ class ORMServiceProvider implements ServiceProviderInterface
             'driver'   => 'pdo_sqlite'
         ];
 
-        $pimple['em'] = function () use ($pimple) {
+        $pimple['em'] = function () use ($app) {
 
-            $config = Setup::createAnnotationMetadataConfiguration($pimple['orm.paths'], $pimple['debug']);
+            $config = Setup::createAnnotationMetadataConfiguration($app['orm.paths'], $app['debug']);
             $namingStrategy = new UnderscoreNamingStrategy();
             $config->setNamingStrategy($namingStrategy);
-            $config->setProxyDir($pimple['orm.cache_dir']);
+            $config->setProxyDir($app['orm.cache_dir']);
 
-            $entityManager = EntityManager::create($pimple['config.database'], $config);
+            $entityManager = EntityManager::create($app['config.database'], $config);
             return $entityManager;
         };
+    }
+
+    public function boot(Application $app)
+    {
+
     }
 }
