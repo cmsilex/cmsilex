@@ -21,8 +21,11 @@ class ORMServiceProvider implements ServiceProviderInterface
         $app['orm.cache_dir'] = 'storage/framework/cache/orm';
 
         $app['config.database'] = [
-            'driver'   => 'pdo_sqlite',
-            'path' => __DIR__ . '/../../../../../db.sqlite'
+            'driver'   => 'pdo_mysql',
+            'dbname' => '2wattend',
+            'user' => 'root',
+            'password' => '',
+            'host' => '127.0.0.1'
         ];
 
         $app['em'] = function () use ($app) {

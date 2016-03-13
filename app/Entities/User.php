@@ -4,7 +4,9 @@ namespace CMSilex\Entities;
 
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
-/** @Entity */
+/**
+ * @Entity
+ */
 class User implements AdvancedUserInterface
 {
     /** @Column(type="integer") @Id @GeneratedValue */
@@ -28,7 +30,7 @@ class User implements AdvancedUserInterface
     /** @Column */
     protected $password;
 
-    /** @Column */
+    /** @Column(nullable=true) */
     protected $salt;
 
     /** @Column(unique=true) */
@@ -66,7 +68,7 @@ class User implements AdvancedUserInterface
 
     public function getSalt()
     {
-        return $this->salt;
+        return null;
     }
 
     public function getUsername()
@@ -78,5 +80,79 @@ class User implements AdvancedUserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param mixed $accountNonExpired
+     */
+    public function setAccountNonExpired($accountNonExpired)
+    {
+        $this->accountNonExpired = $accountNonExpired;
+    }
+
+    /**
+     * @param mixed $accountNonLocked
+     */
+    public function setAccountNonLocked($accountNonLocked)
+    {
+        $this->accountNonLocked = $accountNonLocked;
+    }
+
+    /**
+     * @param mixed $credentialsNonExpired
+     */
+    public function setCredentialsNonExpired($credentialsNonExpired)
+    {
+        $this->credentialsNonExpired = $credentialsNonExpired;
+    }
+
+    /**
+     * @param mixed $enabled
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+    }
+
+    /**
+     * @param mixed $roles
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @param mixed $salt
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+    }
+
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
+
 
 }

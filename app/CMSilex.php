@@ -21,12 +21,16 @@ use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 use CMSilex\Entities\User;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
+use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 class CMSilex extends Application
 {
     use Application\FormTrait;
     use Application\TwigTrait;
     use Application\UrlGeneratorTrait;
+    use Application\SecurityTrait;
 
     public function bootstrap()
     {
@@ -46,6 +50,12 @@ class CMSilex extends Application
         $app->register(new ORMServiceProvider());
         $app->register(new SessionServiceProvider());
         $app->register(new SecurityServiceProvider());
+
+        $app['security.encoder.digest'] = $app->share(function ($app) {
+            // uses the password-compat encryption
+            return new BCryptPasswordEncoder(10);
+        });
+
         $app->register(new ManagerRegistryServiceProvider());
 
         $app['security.firewalls'] = array(
@@ -94,5 +104,24 @@ class CMSilex extends Application
         });
 
         $app->mount('/', new AuthenticationController());
+
+        $app->get('/create', function (Application $app, Request $request) {
+            $user = new User();
+            $user->setUsername('admin');
+            $user->setAccountNonExpired(true);
+            $user->setAccountNonLocked(true);
+            $user->setCredentialsNonExpired(true);
+            $user->setEnabled(true);
+            $user->setRoles(['ROLE_ADMIN']);
+            $user->setPassword($app->encodePassword($user, 'password'));
+            $user->setSalt(null);
+            $user->setId(1);
+
+            $success = $app['em']->persist($user);
+            dump($success);
+            $success = $app['em']->flush();
+            dump($success);
+            return $app->json($user);
+        });
     }
 }
