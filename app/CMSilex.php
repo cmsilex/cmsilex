@@ -2,9 +2,11 @@
 
 namespace CMSilex;
 
+use CMSilex\ControllerProviders\AuthenticationController;
 use CMSilex\ServiceProviders\ORMServiceProvider;
 use Silex\Application;
 use Silex\Provider\SecurityServiceProvider;
+use Silex\Provider\SessionServiceProvider;
 
 class CMSilex extends Application
 {
@@ -12,17 +14,22 @@ class CMSilex extends Application
     {
         $app = $this;
         $app->register(new ORMServiceProvider());
+        $app->register(new SessionServiceProvider());
         $app->register(new SecurityServiceProvider());
 
         $app['security.firewalls'] = array(
             'default' => array(
                 'pattern' => '/',
-                'http' => false,
+                'form' => array('login_path' => '/login', 'check_path' => '/admin/login_check'),
                 'users' => array(
-                    // raw password is foo
                     'admin' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
                 ),
+                'anonymous' => true,
             ),
+        );
+
+        $app['security.access_rules'] = array(
+            array('^/admin', 'ROLE_ADMIN'),
         );
 
         $app->setRoutes();
@@ -32,12 +39,14 @@ class CMSilex extends Application
     {
         $app = $this;
 
-        $app->get('admin', function () {
-
+        $app->get('/admin', function () {
+            return "admin";
         });
 
         $app->get('/', function () {
             return "hello";
         });
+
+        $app->mount('/', new AuthenticationController());
     }
 }
