@@ -14,11 +14,17 @@ class AuthenticationController implements ControllerProviderInterface
 
         $controllers->match('/login', function (Application $app, Request $request) {
             $builder = $app['form.factory']->createNamedBuilder(null);
+
             $builder
                 ->add('_username')
                 ->add('_password')
             ;
-            return "lol";
+
+            $form = $builder->getForm();
+
+            return $app->render('authentication/login.twig', [
+                'form' => $form->createView()
+            ]);
         })
         ->method("POST|GET")
         ->bind('login')

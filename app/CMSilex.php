@@ -5,17 +5,32 @@ namespace CMSilex;
 use CMSilex\ControllerProviders\AuthenticationController;
 use CMSilex\ServiceProviders\ORMServiceProvider;
 use Silex\Application;
+use Silex\Provider\FormServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
 
 class CMSilex extends Application
 {
     public function bootstrap()
     {
         $app = $this;
+        $app['debug'] = true;
+
         $app->register(new ORMServiceProvider());
         $app->register(new SessionServiceProvider());
         $app->register(new SecurityServiceProvider());
+
+        $app->register(new TranslationServiceProvider(), array(
+            'locale_fallbacks' => array('en'),
+            'locale' => 'en'
+        ));
+        $app->register(new ValidatorServiceProvider());
+
+        $app->register(new TwigServiceProvider());
+        $app->register(new FormServiceProvider());
 
         $app['security.firewalls'] = array(
             'default' => array(
