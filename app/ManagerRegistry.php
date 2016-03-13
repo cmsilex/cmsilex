@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\AbstractManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Proxy\Proxy;
+use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class ManagerRegistry extends AbstractManagerRegistry
 {
@@ -60,6 +61,6 @@ class ManagerRegistry extends AbstractManagerRegistry
 
     public function getAliasNamespace($alias)
     {
-        return CMSilex::class;
+        throw new NotImplementedException('Aliases arent implemented');
     }
 }

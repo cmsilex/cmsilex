@@ -18,13 +18,13 @@ class ORMServiceProvider implements ServiceProviderInterface
             ];
         };
 
-        $app['orm.cache_dir'] = 'storage/framework/cache/orm';
+        $app['orm.cache_dir'] = __DIR__ . '/../../../../../storage/framework/cache/orm';
 
         $app['config.database'] = [
             'driver'   => 'pdo_mysql',
-            'dbname' => '2wattend',
-            'user' => 'root',
-            'password' => '',
+            'dbname' => 'vagrantdb',
+            'user' => 'vagrantdbu',
+            'password' => 'password',
             'host' => '127.0.0.1'
         ];
 

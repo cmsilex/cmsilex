@@ -3,6 +3,7 @@
 namespace CMSilex;
 
 use CMSilex\ControllerProviders\AuthenticationController;
+use CMSilex\Entities\Page;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
 use Doctrine\Common\Persistence\Proxy;
@@ -35,11 +36,9 @@ class CMSilex extends Application
     public function bootstrap()
     {
         $app = $this;
+
+
         $app['debug'] = true;
-
-        ErrorHandler::register();
-        ExceptionHandler::register();
-
         $app->register(new UrlGeneratorServiceProvider());
 
         $app->register(new HttpFragmentServiceProvider());
@@ -73,22 +72,17 @@ class CMSilex extends Application
             array('^/admin', 'ROLE_ADMIN'),
         );
 
-        $app->register(new WebProfilerServiceProvider(), [
-            'profiler.cache_dir' => __DIR__ . '/../storage/framework/cache/profiler'
-        ]);
+
         $app->register(new TranslationServiceProvider(), array(
             'locale_fallbacks' => array('en'),
             'locale' => 'en'
         ));
         $app->register(new ValidatorServiceProvider());
         $app->register(new FormServiceProvider());
-
+        $app->register(new WebProfilerServiceProvider(), [
+            'profiler.cache_dir' => __DIR__ . '/../storage/framework/cache/profiler'
+        ]);
         $app->setRoutes();
-    }
-
-    function __call($name, $arguments)
-    {
-        // TODO: Implement __call() method.
     }
 
     public function setRoutes()
@@ -113,14 +107,26 @@ class CMSilex extends Application
             $user->setCredentialsNonExpired(true);
             $user->setEnabled(true);
             $user->setRoles(['ROLE_ADMIN']);
-            $user->setPassword($app->encodePassword($user, 'password'));
+            $user->setPassword("!23");
             $user->setSalt(null);
             $user->setId(1);
 
+            dump($user);
             $success = $app['em']->persist($user);
             dump($success);
             $success = $app['em']->flush();
             dump($success);
+
+            $page = new Page();
+            $page->setSlug('lol');
+            $page->setTitle("LOL");
+
+            $success = $app['em']->persist($page);
+            dump($success);
+            $success = $app['em']->flush();
+            dump($success);
+            dump($page->getId());
+
             return $app->json($user);
         });
     }
