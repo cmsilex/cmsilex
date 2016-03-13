@@ -12,19 +12,20 @@ class ORMServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $pimple['orm.paths'] = function () {
+        $app['orm.paths'] = function () {
             return [
                 __DIR__ . '/../Entities/'
             ];
         };
 
-        $pimple['orm.cache_dir'] = 'storage/framework/cache/orm';
+        $app['orm.cache_dir'] = 'storage/framework/cache/orm';
 
-        $pimple['config.database'] = [
-            'driver'   => 'pdo_sqlite'
+        $app['config.database'] = [
+            'driver'   => 'pdo_sqlite',
+            'path' => __DIR__ . '/../../../../../db.sqlite'
         ];
 
-        $pimple['em'] = function () use ($app) {
+        $app['em'] = function () use ($app) {
 
             $config = Setup::createAnnotationMetadataConfiguration($app['orm.paths'], $app['debug']);
             $namingStrategy = new UnderscoreNamingStrategy();

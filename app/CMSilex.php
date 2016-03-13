@@ -3,7 +3,9 @@
 namespace CMSilex;
 
 use CMSilex\ControllerProviders\AuthenticationController;
+use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
+use Doctrine\Common\Persistence\Proxy;
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
@@ -15,8 +17,10 @@ use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
+use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
+use CMSilex\Entities\User;
 
 class CMSilex extends Application
 {
@@ -42,12 +46,14 @@ class CMSilex extends Application
         $app->register(new ORMServiceProvider());
         $app->register(new SessionServiceProvider());
         $app->register(new SecurityServiceProvider());
+        $app->register(new ManagerRegistryServiceProvider());
+
         $app['security.firewalls'] = array(
             'default' => array(
                 'pattern' => '/',
                 'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
                 'users' => $app->share(function() use ($app) {
-                    return new EntityU
+                    return new EntityUserProvider($app['manager_registry'], User::class, 'username');
                 }),
                 'anonymous' => true,
             ),
@@ -66,8 +72,6 @@ class CMSilex extends Application
         ));
         $app->register(new ValidatorServiceProvider());
         $app->register(new FormServiceProvider());
-
-
 
         $app->setRoutes();
     }
