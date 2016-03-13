@@ -5,23 +5,34 @@ namespace CMSilex;
 use CMSilex\ControllerProviders\AuthenticationController;
 use CMSilex\ServiceProviders\ORMServiceProvider;
 use Silex\Application;
+use Silex\Provider\CsrfServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
+use Silex\Provider\VarDumperServiceProvider;
+use Symfony\Component\Debug\ErrorHandler;
+use Symfony\Component\Debug\ExceptionHandler;
 
 class CMSilex extends Application
 {
+    use Application\FormTrait;
+
     public function bootstrap()
     {
         $app = $this;
         $app['debug'] = true;
 
+        ErrorHandler::register();
+        ExceptionHandler::register();
+
         $app->register(new ORMServiceProvider());
         $app->register(new SessionServiceProvider());
         $app->register(new SecurityServiceProvider());
+        $app->register(new VarDumperServiceProvider());
+        $app->register(new CsrfServiceProvider());
 
         $app->register(new TranslationServiceProvider(), array(
             'locale_fallbacks' => array('en'),

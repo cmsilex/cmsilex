@@ -3,8 +3,8 @@
 namespace CMSilex\ControllerProviders;
 
 use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Silex\Application;
 
 class AuthenticationController implements ControllerProviderInterface
 {
@@ -13,18 +13,7 @@ class AuthenticationController implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->match('/login', function (Application $app, Request $request) {
-            $builder = $app['form.factory']->createNamedBuilder(null);
-
-            $builder
-                ->add('_username')
-                ->add('_password')
-            ;
-
-            $form = $builder->getForm();
-
-            return $app->render('authentication/login.twig', [
-                'form' => $form->createView()
-            ]);
+            $app->form();
         })
         ->method("POST|GET")
         ->bind('login')

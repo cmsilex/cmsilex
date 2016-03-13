@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "37d38fb025898f699b8eaeca3104db6c",
-    "content-hash": "75a867aa798045538138a491ef5396b4",
+    "hash": "aa06b4dbc116655c34b76422227fce64",
+    "content-hash": "d4dc354fda2d029747037c4dce034311",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -740,17 +740,11 @@
         },
         {
             "name": "silex/silex",
-            "version": "dev-master",
+            "version": "dev-cmsilex",
             "source": {
                 "type": "git",
-                "url": "https://github.com/silexphp/Silex.git",
+                "url": "git@github.com:cmsilex/silex.git",
                 "reference": "a8cc0ae4ed1035c08b22c8d9f21d4b44b5287276"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/a8cc0ae4ed1035c08b22c8d9f21d4b44b5287276",
-                "reference": "a8cc0ae4ed1035c08b22c8d9f21d4b44b5287276",
-                "shasum": ""
             },
             "require": {
                 "php": ">=5.5.9",
@@ -800,7 +794,11 @@
                     "Silex\\": "src/Silex"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Silex\\Tests\\": "tests/Silex/Tests"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -2326,11 +2324,11 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "silex/silex": 20
     },
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": []

@@ -6,8 +6,16 @@
             "email": "leighmurray@cmsilex.com"
         }
     ],
+    "minimum-stability":"dev",
+    "prefer-stable":true,
+    "repositories": [
+        {
+            "type": "git",
+            "url":  "git@github.com:cmsilex/silex.git"
+        }
+    ],
     "require": {
-        "silex/silex": "~2.0@dev",
+        "silex/silex": "dev-cmsilex",
         "symfony/yaml": "^3.0",
         "doctrine/orm": "^2.5",
         "symfony/var-dumper": "^3.0",
