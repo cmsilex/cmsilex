@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page.title }}{% endblock title %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div>
+                <h1>{{ page.title }}</h1>
+                <hr>
+                {{ page.content|raw }}
+            </div>
+        </div>
+    </div>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a style="border-top-left-radius: 0; border-top-right-radius: 0; position:fixed; top:-1px; right:15%;" class="btn btn-default" href="{{ url('edit_page', {id: page.id}) }}">Edit</a>
+    {% endif %}
+{% endblock body %}

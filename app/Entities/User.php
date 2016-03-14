@@ -6,7 +6,6 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @Entity
- * @Table(name="lol")
  */
 class User implements AdvancedUserInterface
 {

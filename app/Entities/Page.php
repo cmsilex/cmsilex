@@ -3,7 +3,9 @@
 namespace CMSilex\Entities;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/** @Entity */
+/**
+ * @Entity
+ */
 class Page
 {
     /** @Column(type="integer") @Id @GeneratedValue */
@@ -14,6 +16,9 @@ class Page
 
     /** @Column */
     protected $slug;
+
+    /** @Column(type="text") */
+    protected $content;
 
     /** @ManyToOne(targetEntity="CMSilex\Entities\Page", inversedBy="childPages") */
     protected $parentPage;
@@ -56,6 +61,22 @@ class Page
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param mixed $content
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
     }
 
     /**

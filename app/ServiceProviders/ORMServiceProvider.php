@@ -28,7 +28,7 @@ class ORMServiceProvider implements ServiceProviderInterface
             'host' => '127.0.0.1'
         ];
 
-        $app['em'] = function () use ($app) {
+        $app['em'] = $app->share(function () use ($app) {
 
             $config = Setup::createAnnotationMetadataConfiguration($app['orm.paths'], $app['debug']);
             $namingStrategy = new UnderscoreNamingStrategy();
@@ -37,7 +37,7 @@ class ORMServiceProvider implements ServiceProviderInterface
 
             $entityManager = EntityManager::create($app['config.database'], $config);
             return $entityManager;
-        };
+        });
     }
 
     public function boot(Application $app)

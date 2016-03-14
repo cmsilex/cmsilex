@@ -2,7 +2,9 @@
 
 namespace CMSilex;
 
+use CMSilex\ControllerProviders\AdminController;
 use CMSilex\ControllerProviders\AuthenticationController;
+use CMSilex\ControllerProviders\PageController;
 use CMSilex\Entities\Page;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
@@ -43,9 +45,7 @@ class CMSilex extends Application
 
         $app->register(new HttpFragmentServiceProvider());
         $app->register(new ServiceControllerServiceProvider());
-        $app->register(new TwigServiceProvider(),[
-            'twig.path' => __DIR__ . '/../resources/views'
-        ]);
+
         $app->register(new ORMServiceProvider());
         $app->register(new SessionServiceProvider());
         $app->register(new SecurityServiceProvider());
@@ -79,6 +79,25 @@ class CMSilex extends Application
         ));
         $app->register(new ValidatorServiceProvider());
         $app->register(new FormServiceProvider());
+        $app->register(new TwigServiceProvider(),[
+            'twig.path' => __DIR__ . '/../resources/views',
+            'twig.form.templates' => [
+                'bootstrap_3_layout.html.twig'
+            ]
+        ]);
+
+        $app->extend('twig', $app->share(function (\Twig_Environment $twig) use ($app) {
+            $isCallableFunction = new \Twig_SimpleFunction('is_callable', function ($subject) {
+                return is_callable($subject);
+            });
+            $twig->addFunction($isCallableFunction);
+            $callUserFuncFunction = new \Twig_SimpleFunction('call_user_func', function ($subject, $param) {
+                return call_user_func($subject, $param);
+            });
+            $twig->addFunction($callUserFuncFunction);
+            return $twig;
+        }));
+
         $app->register(new WebProfilerServiceProvider(), [
             'profiler.cache_dir' => __DIR__ . '/../storage/framework/cache/profiler'
         ]);
@@ -89,15 +108,12 @@ class CMSilex extends Application
     {
         $app = $this;
 
-        $app->get('/admin', function () {
-            return "admin";
-        });
-
         $app->get('/', function () {
             return "hello";
         });
 
         $app->mount('/', new AuthenticationController());
+        $app->mount('/admin', new AdminController());
 
         $app->get('/create', function (Application $app, Request $request) {
             $user = new User();
@@ -107,27 +123,33 @@ class CMSilex extends Application
             $user->setCredentialsNonExpired(true);
             $user->setEnabled(true);
             $user->setRoles(['ROLE_ADMIN']);
-            $user->setPassword("!23");
+            $user->setPassword($app->encodePassword($user, "!23"));
             $user->setSalt(null);
-            $user->setId(1);
+            try {
+                dump($user);
+                $success = $app['em']->persist($user);
+                dump($success);
+                $success = $app['em']->flush();
+                dump($success);
 
-            dump($user);
-            $success = $app['em']->persist($user);
-            dump($success);
-            $success = $app['em']->flush();
-            dump($success);
+                $page = new Page();
+                $page->setSlug('lol');
+                $page->setTitle("LOL");
 
-            $page = new Page();
-            $page->setSlug('lol');
-            $page->setTitle("LOL");
 
-            $success = $app['em']->persist($page);
-            dump($success);
-            $success = $app['em']->flush();
-            dump($success);
-            dump($page->getId());
+                $success = $app['em']->persist($page);
+                dump($success);
+                $success = $app['em']->flush();
+                dump($success);
+                dump($page->getId());
+            } catch (\Exception $e) {
+                dump($e);
+            }
 
             return $app->json($user);
         });
+        $app->mount('/', new PageController());
+
     }
+
 }

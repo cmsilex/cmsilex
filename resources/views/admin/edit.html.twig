@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+{% block javascripts %}
+    <script src="//cdn.ckeditor.com/4.5.7/full/ckeditor.js"></script>
+    <script>
+        $(function () {
+            CKEDITOR.replace($('textarea')[0]);
+        });
+    </script>
+{% endblock javascripts %}
+{% block styles %}
+    <link rel="stylesheet" href="/bower_components/simplemde/dist/simplemde.min.css" />
+{% endblock styles %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            {{ form(form) }}
+        </div>
+    </div>
+{% endblock body %}
