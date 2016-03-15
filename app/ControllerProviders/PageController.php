@@ -22,7 +22,7 @@ class PageController implements ControllerProviderInterface
 
     public function getPageAction (Application $app, Request $request, $slug)
     {
-        $page = $app['em']->getRepository('CMSilex\Entities\Page')->findOneBySlug($slug);
+        $page = $app['em']->getRepository('CMSilex\Entities\Page')->findOneBy(['slug' => $slug, 'deleted' => false]);
 
         if (!$page)
         {

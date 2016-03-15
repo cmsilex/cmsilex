@@ -16,6 +16,7 @@ class AdminController implements ControllerProviderInterface
         $controller = $app['controllers_factory'];
 
         $controller->get('/', 'CMSilex\ControllerProviders\AdminController::indexAction');
+
         $controller->get('/pages', 'CMSilex\ControllerProviders\AdminController::listPagesAction')
             ->bind('list_pages')
         ;
@@ -31,6 +32,11 @@ class AdminController implements ControllerProviderInterface
             ->bind('edit_page')
         ;
 
+        $controller->get('/pages/{id}/delete', 'CMSilex\ControllerProviders\AdminController::deletePageAction')
+            ->method('GET')
+            ->bind('delete_page')
+        ;
+
         return $controller;
     }
 
@@ -41,7 +47,7 @@ class AdminController implements ControllerProviderInterface
 
     public function listPagesAction (Application $app, Request $request)
     {
-        $pages = $app['em']->getRepository('CMSilex\Entities\Page')->findAll();
+        $pages = $app['em']->getRepository('CMSilex\Entities\Page')->findBy(['deleted' => false]);
 
         return $app->render('admin/list.html.twig', [
             'rows' => $pages,
@@ -57,6 +63,11 @@ class AdminController implements ControllerProviderInterface
                     return '<a href="' .$app->url('page',
                         ['slug' => $page->getSlug()]
                     ) . '">View</a>';
+                },
+                'delete' => function(Page $page) use ($app) {
+                    return '<a href="' .$app->url('delete_page',
+                        ['id' => $page->getId()]
+                    ) . '">Delete</a>';
                 },
             ]
         ]);
@@ -87,5 +98,19 @@ class AdminController implements ControllerProviderInterface
         return $app->render('admin/edit.html.twig', [
            'form' => $form->createView()
         ]);
+    }
+
+    public function deletePageAction (Application $app, Request $request, $id)
+    {
+        $page = $app['em']->find('CMSilex\Entities\Page', $id);
+
+        if ($page)
+        {
+            $page->setDeleted(true);
+            $app['em']->persist($page);
+            $app['em']->flush();
+        }
+
+        return $app->redirect($app->url('list_pages'));
     }
 }

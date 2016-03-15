@@ -20,6 +20,9 @@ class Page
     /** @Column(type="text") */
     protected $content;
 
+    /** @Column(type="boolean") */
+    protected $deleted;
+
     /** @ManyToOne(targetEntity="CMSilex\Entities\Page", inversedBy="childPages") */
     protected $parentPage;
 
@@ -77,6 +80,16 @@ class Page
     public function setContent($content)
     {
         $this->content = $content;
+    }
+
+    public function isDeleted()
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
     }
 
     /**

@@ -22,11 +22,18 @@
         "symfony/intl": "^3.0",
         "symfony/security-csrf": "^3.0",
         "silex/web-profiler": "^1.0",
-        "symfony/doctrine-bridge": "^3.0"
+        "symfony/doctrine-bridge": "^3.0",
+        "cmsilex/textile": "dev-master"
     },
     "autoload": {
         "psr-4": {
             "CMSilex\\":"app/"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url":  "git@github.com:cmsilex/textile.git"
+        }
+    ]
 }

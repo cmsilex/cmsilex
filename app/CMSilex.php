@@ -8,6 +8,7 @@ use CMSilex\ControllerProviders\PageController;
 use CMSilex\Entities\Page;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
+use CMSilex\ServiceProviders\TextileServiceProvider;
 use Doctrine\Common\Persistence\Proxy;
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
@@ -97,6 +98,8 @@ class CMSilex extends Application
             $twig->addFunction($callUserFuncFunction);
             return $twig;
         }));
+
+        $app->register(new TextileServiceProvider());
 
         $app->register(new WebProfilerServiceProvider(), [
             'profiler.cache_dir' => __DIR__ . '/../storage/framework/cache/profiler'

@@ -5,10 +5,10 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <div>
+            <div class="col-xs-12">
                 <h1>{{ page.title }}</h1>
                 <hr>
-                {{ page.content|raw }}
+                {{ app.textile.textileThis(page.content)|raw }}
             </div>
         </div>
     </div>

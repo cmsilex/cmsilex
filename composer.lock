@@ -4,9 +4,35 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f51e116e3770430c768603b7745d069f",
-    "content-hash": "ca570e570604b22c3f7fae6d87433998",
+    "hash": "aa018361c36dc43e66aa6076c4faeb7f",
+    "content-hash": "0720a85974c202a9070061adaf0058d2",
     "packages": [
+        {
+            "name": "cmsilex/textile",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:cmsilex/textile.git",
+                "reference": "01da0dfc18b49f411d5de0e84281fafa40d08b41"
+            },
+            "require": {
+                "netcarver/textile": "^3.5",
+                "silex/silex": "^1.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CMSilex\\ServiceProviders\\": ""
+                }
+            },
+            "authors": [
+                {
+                    "name": "Leigh Murray",
+                    "email": "leighmurray@2wattend.com"
+                }
+            ],
+            "time": "2016-03-15 11:14:16"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.2.7",
@@ -605,6 +631,59 @@
                 "orm"
             ],
             "time": "2016-01-05 21:34:58"
+        },
+        {
+            "name": "netcarver/textile",
+            "version": "v3.5.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/textile/php-textile.git",
+                "reference": "1b95af533775316d09bd36a38bee2c0b804add12"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/textile/php-textile/zipball/1b95af533775316d09bd36a38bee2c0b804add12",
+                "reference": "1b95af533775316d09bd36a38bee2c0b804add12",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*",
+                "satooshi/php-coveralls": "0.6.*",
+                "squizlabs/php_codesniffer": "1.5.*",
+                "symfony/yaml": "2.3.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Netcarver\\Textile": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Textile markup language parser",
+            "homepage": "https://github.com/textile/php-textile",
+            "keywords": [
+                "document",
+                "format",
+                "html",
+                "language",
+                "markup",
+                "parser",
+                "php-textile",
+                "plaintext",
+                "textile"
+            ],
+            "time": "2014-01-02 09:39:06"
         },
         {
             "name": "paragonie/random_compat",
@@ -2546,7 +2625,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "cmsilex/textile": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
