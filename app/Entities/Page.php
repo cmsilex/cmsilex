@@ -20,7 +20,7 @@ class Page
     /** @Column(type="text", nullable=true) */
     protected $content;
 
-    /** @Column(type="boolean") */
+    /** @Column(type="boolean",options={"default":false}) */
     protected $deleted;
 
     /** @ManyToOne(targetEntity="CMSilex\Entities\Page", inversedBy="childPages") */
