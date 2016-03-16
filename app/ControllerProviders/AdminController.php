@@ -91,6 +91,8 @@ class AdminController implements ControllerProviderInterface
                 $page = $form->getData();
                 $app['em']->persist($page);
                 $app['em']->flush();
+                dump($page);
+                exit;
                 return $app->redirect($app->url('list_pages'));
             }
         }
