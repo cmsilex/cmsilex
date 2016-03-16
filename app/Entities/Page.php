@@ -32,6 +32,7 @@ class Page
     public function __construct()
     {
         $this->childPages = new ArrayCollection();
+        $this->deleted = false;
     }
 
     /**
