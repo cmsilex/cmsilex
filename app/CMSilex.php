@@ -4,12 +4,10 @@ namespace CMSilex;
 
 use CMSilex\ControllerProviders\AdminController;
 use CMSilex\ControllerProviders\AuthenticationController;
-use CMSilex\ControllerProviders\PageController;
 use CMSilex\Entities\Page;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
 use CMSilex\ServiceProviders\TextileServiceProvider;
-use Doctrine\Common\Persistence\Proxy;
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
@@ -22,12 +20,9 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
 use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
-use Symfony\Component\Debug\ErrorHandler;
-use Symfony\Component\Debug\ExceptionHandler;
 use CMSilex\Entities\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 class CMSilex extends Application
 {
@@ -39,7 +34,6 @@ class CMSilex extends Application
     public function bootstrap()
     {
         $app = $this;
-
 
         $app['debug'] = true;
         $app->register(new UrlGeneratorServiceProvider());
@@ -111,10 +105,6 @@ class CMSilex extends Application
     {
         $app = $this;
 
-        $app->get('/', function () {
-            return "hello";
-        });
-
         $app->mount('/', new AuthenticationController());
         $app->mount('/admin', new AdminController());
 
@@ -151,8 +141,5 @@ class CMSilex extends Application
 
             return $app->json($user);
         });
-        $app->mount('/', new PageController());
-
     }
-
 }

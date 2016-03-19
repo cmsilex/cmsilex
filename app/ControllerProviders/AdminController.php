@@ -15,8 +15,6 @@ class AdminController implements ControllerProviderInterface
     {
         $controller = $app['controllers_factory'];
 
-        $controller->get('/', 'CMSilex\ControllerProviders\AdminController::indexAction');
-
         $controller->get('/pages', 'CMSilex\ControllerProviders\AdminController::listPagesAction')
             ->bind('list_pages')
         ;
@@ -40,11 +38,6 @@ class AdminController implements ControllerProviderInterface
         return $controller;
     }
 
-    public function indexAction (Application $app, Request $request)
-    {
-        return "ok";
-    }
-
     public function listPagesAction (Application $app, Request $request)
     {
         $pages = $app['em']->getRepository('CMSilex\Entities\Page')->findBy(['deleted' => false]);
@@ -60,9 +53,7 @@ class AdminController implements ControllerProviderInterface
                     ) . '">Edit</a>';
                 },
                 'view' => function(Page $page) use ($app) {
-                    return '<a href="' .$app->url('page',
-                        ['slug' => $page->getSlug()]
-                    ) . '">View</a>';
+                    return '<a href="/' . $page->getSlug() . '">View</a>';
                 },
                 'delete' => function(Page $page) use ($app) {
                     return '<a href="' .$app->url('delete_page',
@@ -91,8 +82,25 @@ class AdminController implements ControllerProviderInterface
                 $page = $form->getData();
                 $app['em']->persist($page);
                 $app['em']->flush();
-                dump($page);
-                exit;
+                if (!is_dir($page->getSlug()))
+                {
+                    mkdir($page->getSlug());
+                }
+
+                if ($page->getSlug()){
+                    $filedir = $page->getSlug() . '/index.html';
+                } else {
+                    $filedir = './index.html';
+                }
+
+
+
+                $string = $app['twig']->render('page/standard.html.twig', [
+                    'page' => $page
+                ]);
+
+                file_put_contents($filedir, $string);
+
                 return $app->redirect($app->url('list_pages'));
             }
         }

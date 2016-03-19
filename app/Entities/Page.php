@@ -14,7 +14,7 @@ class Page
     /** @Column */
     protected $title;
 
-    /** @Column */
+    /** @Column(nullable=true) */
     protected $slug;
 
     /** @Column(type="text", nullable=true) */
