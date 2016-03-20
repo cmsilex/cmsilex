@@ -1,9 +1,11 @@
 {% extends "base.html.twig" %}
 {% block javascripts %}
+    <script src="/js/epiceditor/js/epiceditor.min.js"></script>
+    <script src="/js/epiceditor/js/textile.min.js"></script>
     <script>
         $(function () {
             var editor = new EpicEditor({
-                basePath: '/epiceditor',
+                basePath: '/js/epiceditor',
                 clientSideStorage: true,
                 localStorageName: 'epiceditor',
                 useNativeFullscreen: true,
