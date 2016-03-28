@@ -19,10 +19,8 @@ class AdminController implements ControllerProviderInterface
             return $app['twig']->render('admin/dashboard.html.twig');
         });
 
-
-
         return $controller;
     }
 
-    
+
 }

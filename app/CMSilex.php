@@ -6,10 +6,10 @@ use CMSilex\ControllerProviders\AdminController;
 use CMSilex\ControllerProviders\AuthenticationController;
 use CMSilex\ControllerProviders\PageController;
 use CMSilex\Entities\Page;
+use CMSilex\ServiceProviders\ConfigServiceProvider;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
 use CMSilex\ServiceProviders\TextileServiceProvider;
-use CMSilex\ServiceProviders\ConfigServiceProvider;
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
@@ -36,7 +36,9 @@ class CMSilex extends Application
     {
         $app = $this;
 
-        $app['debug'] = true;
+        $app->register(new ConfigServiceProvider());
+
+        $app['debug'] = $app['config']['debug'];
         $app->register(new UrlGeneratorServiceProvider());
 
         $app->register(new HttpFragmentServiceProvider());
@@ -57,12 +59,9 @@ class CMSilex extends Application
             'default' => array(
                 'pattern' => '/',
                 'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
-                //'users' => $app->share(function() use ($app) {
-                //    return new EntityUserProvider($app['manager_registry'], User::class, 'username');
-                //}),
+                'logout' => array('logout_path' => '/logout', 'invalidate_session' => true),
                 'users' => [
-                    // raw password is foo
-                    'admin' => ['ROLE_ADMIN', '$2y$10$GA3Iud18SWMNJ85oUzbUA.OZ/FvfHyv/7TgweAuEDnXtEsSwHtXEW'],
+                    $app['config']['username'] => ['ROLE_ADMIN', $app['config']['password']],
                 ],
                 'anonymous' => true,
             ),
@@ -100,7 +99,6 @@ class CMSilex extends Application
         }));
 
         $app->register(new TextileServiceProvider());
-        $app->register(new ConfigServiceProvider());
 
         $app->register(new WebProfilerServiceProvider(), [
             'profiler.cache_dir' => __DIR__ . '/../storage/framework/cache/profiler'
