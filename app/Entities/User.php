@@ -36,6 +36,11 @@ class User implements AdvancedUserInterface
     /** @Column(unique=true) */
     protected $username;
 
+    public function __construct()
+    {
+        $this->salt = null;
+    }
+
     public function isAccountNonExpired()
     {
         return $this->accountNonExpired;

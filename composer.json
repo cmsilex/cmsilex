@@ -23,7 +23,8 @@
         "symfony/security-csrf": "^3.0",
         "silex/web-profiler": "^1.0",
         "symfony/doctrine-bridge": "^3.0",
-        "cmsilex/textile": "dev-master"
+        "cmsilex/textile": "dev-master",
+        "cmsilex/config": "dev-master"
     },
     "autoload": {
         "psr-4": {

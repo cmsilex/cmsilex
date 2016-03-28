@@ -2,8 +2,10 @@
 
 namespace CMSilex;
 
+use CMSilex\Config\ConfigServiceProvider;
 use CMSilex\ControllerProviders\AdminController;
 use CMSilex\ControllerProviders\AuthenticationController;
+use CMSilex\ControllerProviders\PageController;
 use CMSilex\Entities\Page;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
@@ -19,7 +21,6 @@ use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
-use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
 use CMSilex\Entities\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
@@ -56,17 +57,22 @@ class CMSilex extends Application
             'default' => array(
                 'pattern' => '/',
                 'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
-                'users' => $app->share(function() use ($app) {
-                    return new EntityUserProvider($app['manager_registry'], User::class, 'username');
-                }),
+                //'users' => $app->share(function() use ($app) {
+                //    return new EntityUserProvider($app['manager_registry'], User::class, 'username');
+                //}),
+                'users' => [
+                    // raw password is foo
+                    'admin' => ['ROLE_ADMIN', '$2y$10$GA3Iud18SWMNJ85oUzbUA.OZ/FvfHyv/7TgweAuEDnXtEsSwHtXEW'],
+                ],
                 'anonymous' => true,
             ),
         );
 
-        $app['security.access_rules'] = array(
-            array('^/', 'ROLE_ADMIN'),
-        );
-
+        $app['security.access_rules'] = [
+            ['^/login', 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['^/create', 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['^/', 'ROLE_ADMIN'],
+        ];
 
         $app->register(new TranslationServiceProvider(), array(
             'locale_fallbacks' => array('en'),
@@ -94,6 +100,7 @@ class CMSilex extends Application
         }));
 
         $app->register(new TextileServiceProvider());
+        $app->register(new ConfigServiceProvider());
 
         $app->register(new WebProfilerServiceProvider(), [
             'profiler.cache_dir' => __DIR__ . '/../storage/framework/cache/profiler'
@@ -107,8 +114,10 @@ class CMSilex extends Application
 
         $app->mount('/', new AuthenticationController());
         $app->mount('/', new AdminController());
+        $app->mount('/admin/', new PageController());
 
         $app->get('/create', function (Application $app, Request $request) {
+            exit;
             $user = new User();
             $user->setUsername('admin');
             $user->setAccountNonExpired(true);
@@ -116,7 +125,8 @@ class CMSilex extends Application
             $user->setCredentialsNonExpired(true);
             $user->setEnabled(true);
             $user->setRoles(['ROLE_ADMIN']);
-            $user->setPassword($app->encodePassword($user, "!23"));
+            $user->setPassword($app->encodePassword($user, "foo"));
+            dump($user->getPassword());exit;
             $user->setSalt(null);
             try {
                 dump($user);
