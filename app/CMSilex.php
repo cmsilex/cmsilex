@@ -22,6 +22,7 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
 use CMSilex\Entities\User;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 
@@ -103,6 +104,11 @@ class CMSilex extends Application
         $app->register(new WebProfilerServiceProvider(), [
             'profiler.cache_dir' => __DIR__ . '/../storage/framework/cache/profiler'
         ]);
+        
+        $app['finder'] = $app->share(function () {
+            return new Finder();
+        });
+        
         $app->setRoutes();
     }
 

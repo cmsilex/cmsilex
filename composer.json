@@ -24,7 +24,9 @@
         "silex/web-profiler": "^1.0",
         "symfony/doctrine-bridge": "^3.0",
         "cmsilex/textile": "dev-master",
-        "cmsilex/config": "dev-master"
+        "cmsilex/config": "dev-master",
+        "symfony/finder": "^3.0",
+        "symfony/filesystem": "^3.0"
     },
     "autoload": {
         "psr-4": {
