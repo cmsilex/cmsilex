@@ -2,8 +2,11 @@
 
 namespace CMSilex\ControllerProviders;
 
+use CMSilex\Forms\Types\PageType;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
+use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
 class PageController implements ControllerProviderInterface
@@ -22,14 +25,10 @@ class PageController implements ControllerProviderInterface
             ->value('id', null)
         ;
 
-        $controller->get('/pages/{id}/edit', 'CMSilex\ControllerProviders\PageController::editPageAction')
+        $controller->match('/pages/{url}', 'CMSilex\ControllerProviders\PageController::editPageAction')
             ->method('POST|GET')
+            ->assert('url', '.+')
             ->bind('edit_page')
-        ;
-
-        $controller->get('/pages/{id}/delete', 'CMSilex\ControllerProviders\PageController::deletePageAction')
-            ->method('GET')
-            ->bind('delete_page')
         ;
 
         return $controller;
@@ -38,35 +37,40 @@ class PageController implements ControllerProviderInterface
     public function listPagesAction (Application $app, Request $request)
     {
 
-        $pages = $app['finder']->files()->in('../pages/');
-        dump($pages);
-        exit;
+        $pagesDir = $app['config']['pages_dir'];
+        $finder = $app['finder']->in($pagesDir);
+
+        $pages = iterator_to_array($finder->files());
 
         return $app->render('admin/list.html.twig', [
             'rows' => $pages,
             'columns' => [
-                'title',
-                'slug',
-                'edit' => function(Page $page) use ($app) {
+                'relativePathName',
+                'edit' => function(SplFileInfo $fileInfo) use ($app) {
                     return '<a href="' .$app->url('edit_page',
-                        ['id' => $page->getId()]
+                        ['url' => $fileInfo->getRelativePathname()]
                     ) . '">Edit</a>';
-                },
-                'view' => function(Page $page) use ($app) {
-                    return '<a href="/' . $page->getSlug() . '">View</a>';
-                },
-                'delete' => function(Page $page) use ($app) {
-                    return '<a href="' .$app->url('delete_page',
-                        ['id' => $page->getId()]
-                    ) . '">Delete</a>';
                 },
             ]
         ]);
     }
 
-    public function editPageAction (Application $app, Request $request, $id)
+    public function editPageAction (Application $app, Request $request, $url)
     {
-        $page = $id ? $app['em']->find('CMSilex\Entities\Page', $id) : null;
+
+        $pagesDir = $app['config']['pages_dir'];
+
+        $fileDir = $pagesDir . $url;
+
+        $page = [];
+
+        if ($app['filesystem']->exists($fileDir)) {
+            $fileContents = file_get_contents($fileDir);
+            $page['content'] = $fileContents;
+            $page['slug'] = $url;
+        } else {
+            dump("boo");
+        }
 
         $form = $app['form.factory']->createBuilder(PageType::class, $page)
             ->add('save', SubmitType::class)
@@ -80,26 +84,17 @@ class PageController implements ControllerProviderInterface
             if ($form->isValid())
             {
                 $page = $form->getData();
-                $app['em']->persist($page);
-                $app['em']->flush();
-                if (!is_dir($page->getSlug()))
+
+
+                $newUrl = $page['slug'];
+
+                if (strcmp($url, $newUrl) !== 0)
                 {
-                    mkdir($page->getSlug());
+                    $app['filesystem']->remove($fileDir);
                 }
-
-                if ($page->getSlug()){
-                    $filedir = $page->getSlug() . '/index.html';
-                } else {
-                    $filedir = './index.html';
-                }
-
-
-
-                $string = $app['twig']->render('page/standard.html.twig', [
-                    'page' => $page
-                ]);
-
-                file_put_contents($filedir, $string);
+                $newFileDir = $pagesDir . $newUrl;
+                $app['filesystem']->touch($newFileDir);
+                file_put_contents($newFileDir, $page['content']);
 
                 return $app->redirect($app->url('list_pages'));
             }

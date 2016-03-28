@@ -22,6 +22,7 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
 use CMSilex\Entities\User;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
@@ -107,6 +108,10 @@ class CMSilex extends Application
         
         $app['finder'] = $app->share(function () {
             return new Finder();
+        });
+
+        $app['filesystem'] = $app->share(function () {
+            return new Filesystem();
         });
         
         $app->setRoutes();

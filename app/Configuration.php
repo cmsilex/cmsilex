@@ -10,10 +10,14 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('database');
+        $rootNode = $treeBuilder->root('cmsilex');
 
         $rootNode
             ->children()
+                ->scalarNode('pages_dir')
+                    ->isRequired()
+                    ->defaultValue('../pages/')
+                ->end()
                 ->booleanNode('debug')
                     ->defaultFalse()
                 ->end()
