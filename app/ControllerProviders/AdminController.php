@@ -15,6 +15,10 @@ class AdminController implements ControllerProviderInterface
     {
         $controller = $app['controllers_factory'];
 
+        $controller->get('/', function (Application $app, Request $request) {
+            
+        });
+
         $controller->get('/pages', 'CMSilex\ControllerProviders\AdminController::listPagesAction')
             ->bind('list_pages')
         ;

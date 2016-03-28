@@ -64,7 +64,7 @@ class CMSilex extends Application
         );
 
         $app['security.access_rules'] = array(
-            array('^/admin', 'ROLE_ADMIN'),
+            array('^/', 'ROLE_ADMIN'),
         );
 
 
@@ -106,7 +106,7 @@ class CMSilex extends Application
         $app = $this;
 
         $app->mount('/', new AuthenticationController());
-        $app->mount('/admin', new AdminController());
+        $app->mount('/', new AdminController());
 
         $app->get('/create', function (Application $app, Request $request) {
             $user = new User();
