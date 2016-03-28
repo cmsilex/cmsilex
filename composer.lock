@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "56c36a643492081af0cd488eba2442d5",
-    "content-hash": "5c45f9f3126145df3844c90db5c4b528",
+    "hash": "cb95d4c76689917c7a39e5200701fdce",
+    "content-hash": "e45b598d235f65c36325b929275bf9d0",
     "packages": [
         {
             "name": "cmsilex/config",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cmsilex/config.git",
-                "reference": "9089d8ce4f460b597d3bbc0a5aac330cc9cb623b"
+                "reference": "8faca6297bb5d2555478d9edabbbd327f214b657"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/cmsilex/config/zipball/8faca6297bb5d2555478d9edabbbd327f214b657",
-                "reference": "9089d8ce4f460b597d3bbc0a5aac330cc9cb623b",
+                "reference": "8faca6297bb5d2555478d9edabbbd327f214b657",
                 "shasum": ""
             },
             "require": {
@@ -38,7 +38,7 @@
                     "email": "leighmurray@2wattend.com"
                 }
             ],
-            "time": "2016-03-28 10:22:45"
+            "time": "2016-03-28 11:33:07"
         },
         {
             "name": "cmsilex/textile",
@@ -1323,55 +1323,6 @@
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
             "time": "2016-02-23 15:16:06"
-        },
-        {
-            "name": "symfony/finder",
-            "version": "v3.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/finder.git",
-                "reference": "623bda0abd9aa29e529c8e9c08b3b84171914723"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/623bda0abd9aa29e529c8e9c08b3b84171914723",
-                "reference": "623bda0abd9aa29e529c8e9c08b3b84171914723",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Finder\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Finder Component",
-            "homepage": "https://symfony.com",
-            "time": "2016-01-27 05:14:46"
         },
         {
             "name": "symfony/form",
