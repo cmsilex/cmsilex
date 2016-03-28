@@ -37,6 +37,8 @@ class PageController implements ControllerProviderInterface
 
     public function listPagesAction (Application $app, Request $request)
     {
+        $app['config'];
+        exit;
         $pages = $app['em']->getRepository('CMSilex\Entities\Page')->findBy(['deleted' => false]);
 
         return $app->render('admin/list.html.twig', [

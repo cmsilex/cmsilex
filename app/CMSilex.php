@@ -2,7 +2,6 @@
 
 namespace CMSilex;
 
-use CMSilex\ServiceProviders\ConfigServiceProvider;
 use CMSilex\ControllerProviders\AdminController;
 use CMSilex\ControllerProviders\AuthenticationController;
 use CMSilex\ControllerProviders\PageController;
@@ -10,6 +9,7 @@ use CMSilex\Entities\Page;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
 use CMSilex\ServiceProviders\TextileServiceProvider;
+use CMSilex\ServiceProviders\ConfigServiceProvider;
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
