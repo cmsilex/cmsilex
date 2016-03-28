@@ -2,7 +2,7 @@
 
 namespace CMSilex;
 
-use CMSilex\Config\ConfigServiceProvider;
+use CMSilex\ServiceProviders\ConfigServiceProvider;
 use CMSilex\ControllerProviders\AdminController;
 use CMSilex\ControllerProviders\AuthenticationController;
 use CMSilex\ControllerProviders\PageController;

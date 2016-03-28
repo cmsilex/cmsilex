@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cmsilex/config.git",
-                "reference": "cbfb107f3af433fc9f023feaef5b0748ad26e597"
+                "reference": "59950110a6b65ae47148a37f3e75f5cf2726132b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cmsilex/config/zipball/cbfb107f3af433fc9f023feaef5b0748ad26e597",
-                "reference": "cbfb107f3af433fc9f023feaef5b0748ad26e597",
+                "url": "https://api.github.com/repos/cmsilex/config/zipball/59950110a6b65ae47148a37f3e75f5cf2726132b",
+                "reference": "59950110a6b65ae47148a37f3e75f5cf2726132b",
                 "shasum": ""
             },
             "require": {
@@ -27,7 +27,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "CMSilex\\ServiceProviders\\": ""
+                    "CMSilex\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -37,7 +37,7 @@
                     "email": "leighmurray@2wattend.com"
                 }
             ],
-            "time": "2016-03-28 09:04:26"
+            "time": "2016-03-28 09:56:58"
         },
         {
             "name": "cmsilex/textile",
