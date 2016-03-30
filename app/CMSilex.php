@@ -126,7 +126,7 @@ class CMSilex extends Application
 
         $app->mount('/', new AuthenticationController());
         $app->mount('/', new AdminController());
-        $app->mount('/admin/', new PageController());
+        $app->mount('/', new PageController());
 
         $app->get('/create', function (Application $app, Request $request) {
             exit;

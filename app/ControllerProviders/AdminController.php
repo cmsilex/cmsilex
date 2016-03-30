@@ -2,12 +2,9 @@
 
 namespace CMSilex\ControllerProviders;
 
-use CMSilex\Entities\Page;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use CMSilex\Forms\Types\PageType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AdminController implements ControllerProviderInterface
 {
@@ -21,6 +18,5 @@ class AdminController implements ControllerProviderInterface
 
         return $controller;
     }
-
-
+    
 }

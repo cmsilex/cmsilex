@@ -26,7 +26,7 @@ class PageController implements ControllerProviderInterface
         $controller->get('/pages/new', 'CMSilex\ControllerProviders\PageController::editPageAction')
             ->method('POST|GET')
             ->bind('new_page')
-            ->value('id', null)
+            ->value('url', null)
         ;
 
         $controller->match('/pages/{url}', 'CMSilex\ControllerProviders\PageController::editPageAction')
@@ -89,8 +89,6 @@ class PageController implements ControllerProviderInterface
             $fileContents = file_get_contents($fileDir);
             $page['content'] = $fileContents;
             $page['slug'] = $url;
-        } else {
-            dump("boo");
         }
 
         $form = $app['form.factory']->createBuilder(PageType::class, $page)
@@ -113,8 +111,19 @@ class PageController implements ControllerProviderInterface
                 {
                     $app['filesystem']->remove($fileDir);
                 }
+
+
                 $newFileDir = $pagesDir . $newUrl;
-                $app['filesystem']->touch($newFileDir);
+
+                $i = strrpos($newFileDir, '/');
+
+                $folderDir = substr($newFileDir, 0, $i);
+
+                if (!$app['filesystem']->exists($folderDir))
+                {
+                    $app['filesystem']->mkdir($folderDir);
+                }
+
                 file_put_contents($newFileDir, $page['content']);
 
                 return $app->redirect($app->url('list_pages'));
