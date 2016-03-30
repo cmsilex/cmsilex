@@ -107,7 +107,7 @@ class PageController implements ControllerProviderInterface
 
                 $newUrl = $page['slug'];
 
-                if (strcmp($url, $newUrl) !== 0)
+                if ($url && strcmp($url, $newUrl) !== 0)
                 {
                     $app['filesystem']->remove($fileDir);
                 }
