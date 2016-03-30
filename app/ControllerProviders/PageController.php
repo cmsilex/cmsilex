@@ -42,16 +42,18 @@ class PageController implements ControllerProviderInterface
     {
         $inputDir = $app['config']['pages_dir'];
         $outputDir = "../public/";
+        $cmdOutput = [];
 
         try {
-            $app['rst']->build($inputDir, $outputDir);
+            $cmd = "sphinx-build $inputDir $outputDir";
+            exec($cmd, $cmdOutput);
         } catch (\Exception $e)
         {
             dump($e);
             exit;
         }
 
-
+        dump($cmdOutput);
         return $app->redirect($app->url('list_pages'));
     }
 

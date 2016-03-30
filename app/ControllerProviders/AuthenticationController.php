@@ -2,6 +2,7 @@
 
 namespace CMSilex\ControllerProviders;
 
+use CMSilex\Entities\User;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
@@ -34,6 +35,36 @@ class AuthenticationController implements ControllerProviderInterface
         })
         ->method("POST|GET")
         ->bind('login')
+        ;
+
+
+        $controllers->match('/encode', function (Application $app, Request $request) {
+            $form = $app['form.factory']->createNamedBuilder(null)
+                ->add('password')
+                ->add('submit', SubmitType::class)
+                ->getForm()
+            ;
+
+            $form->handleRequest($request);
+
+            $password = null;
+
+            if ($form->isValid() && $form->isSubmitted())
+            {
+                $tmpUser = new User();
+                $data = $form->getData();
+                $password = $app->encodePassword($tmpUser, $data['password']);
+            }
+
+            $form = $form->createView();
+
+            return $app->render('authentication/encode.html.twig', [
+                'form' => $form,
+                'password' => $password
+            ]);
+        })
+        ->method("POST|GET")
+        ->bind('encode')
         ;
 
         return $controllers;

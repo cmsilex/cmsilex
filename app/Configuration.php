@@ -15,7 +15,6 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('pages_dir')
-                    ->isRequired()
                     ->defaultValue('../pages/')
                 ->end()
                 ->booleanNode('debug')

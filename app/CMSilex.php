@@ -72,7 +72,7 @@ class CMSilex extends Application
 
         $app['security.access_rules'] = [
             ['^/login', 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['^/create', 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['^/encode', 'IS_AUTHENTICATED_ANONYMOUSLY'],
             ['^/', 'ROLE_ADMIN'],
         ];
 

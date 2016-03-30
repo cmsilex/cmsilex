@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form(form) }}
+    {% if password is not empty %}
+        <h3>Password</h3>
+        <pre>{{- password -}}</pre>
+    {% endif %}
+{% endblock body %}
