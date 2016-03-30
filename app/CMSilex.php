@@ -9,6 +9,7 @@ use CMSilex\Entities\Page;
 use CMSilex\ServiceProviders\ConfigServiceProvider;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
+use CMSilex\ServiceProviders\RSTServiceProvider;
 use CMSilex\ServiceProviders\TextileServiceProvider;
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
@@ -113,6 +114,8 @@ class CMSilex extends Application
         $app['filesystem'] = $app->share(function () {
             return new Filesystem();
         });
+
+        $app->register(new RSTServiceProvider());
         
         $app->setRoutes();
     }
