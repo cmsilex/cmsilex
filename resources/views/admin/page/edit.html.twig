@@ -1,9 +1,12 @@
 {% extends "base.html.twig" %}
 {% block javascripts %}
-    <script src="//cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
+    <script src="/ckeditor/ckeditor.js"></script>
     <script>
         $(function () {
-            CKEDITOR.replace( 'page[content]' );
+            //CKEDITOR.plugins.addExternal( 'imageuploader', '/imageuploader/', 'plugin.js' );
+            CKEDITOR.replace( 'page[content]', {
+                extraPlugins: 'imageuploader'
+            } );
 
         });
     </script>
