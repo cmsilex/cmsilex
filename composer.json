@@ -27,7 +27,8 @@
         "cmsilex/config": "dev-master",
         "symfony/finder": "^3.0",
         "symfony/filesystem": "^3.0",
-        "cmsilex/rst": "dev-master"
+        "cmsilex/rst": "dev-master",
+        "doctrine/dbal": "^2.5"
     },
     "autoload": {
         "psr-4": {

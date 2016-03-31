@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "11c15c838d218d3777b1620116832a5d",
-    "content-hash": "fd585fb7f7cbb1414f6c8de4ec85cbe7",
+    "hash": "99d0bf9d7edc1c4c384551337d9be496",
+    "content-hash": "0473fd7c85e88902afbbd59459943d32",
     "packages": [
         {
             "name": "cmsilex/config",

@@ -2,10 +2,10 @@
 
 namespace CMSilex\ControllerProviders;
 
+use CMSilex\Entities\Page;
 use CMSilex\Forms\Types\PageType;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,12 +26,11 @@ class PageController implements ControllerProviderInterface
         $controller->get('/pages/new', 'CMSilex\ControllerProviders\PageController::editPageAction')
             ->method('POST|GET')
             ->bind('new_page')
-            ->value('url', null)
+            ->value('id', null)
         ;
 
-        $controller->match('/pages/{url}', 'CMSilex\ControllerProviders\PageController::editPageAction')
+        $controller->match('/pages/{id}', 'CMSilex\ControllerProviders\PageController::editPageAction')
             ->method('POST|GET')
-            ->assert('url', '.+')
             ->bind('edit_page')
         ;
 
@@ -59,38 +58,28 @@ class PageController implements ControllerProviderInterface
 
     public function listPagesAction (Application $app, Request $request)
     {
+        $pages = $app['em']->getRepository('CMSilex\Entities\Page')->findAll();
 
-        $pagesDir = $app['config']['pages_dir'];
-        $finder = $app['finder']->in($pagesDir);
-
-        $pages = iterator_to_array($finder->files());
-
-        return $app->render('admin/list.html.twig', [
+        return $app->render('admin/page/list.html.twig', [
             'rows' => $pages,
             'columns' => [
-                'relativePathName',
-                'edit' => function(SplFileInfo $fileInfo) use ($app) {
+                'title',
+                'slug',
+                'edit' => function(Page $page) use ($app) {
                     return '<a href="' .$app->url('edit_page',
-                        ['url' => $fileInfo->getRelativePathname()]
+                        ['id' => $page->getId()]
                     ) . '">Edit</a>';
                 },
             ]
         ]);
     }
 
-    public function editPageAction (Application $app, Request $request, $url)
+    public function editPageAction (Application $app, Request $request, $id)
     {
+        $page = null;
 
-        $pagesDir = $app['config']['pages_dir'];
-
-        $fileDir = $pagesDir . $url;
-
-        $page = [];
-
-        if ($app['filesystem']->exists($fileDir)) {
-            $fileContents = file_get_contents($fileDir);
-            $page['content'] = $fileContents;
-            $page['slug'] = $url;
+        if ($id) {
+            $page = $app['em']->find('CMSilex\Entities\Page', $id);
         }
 
         $form = $app['form.factory']->createBuilder(PageType::class, $page)
@@ -106,33 +95,14 @@ class PageController implements ControllerProviderInterface
             {
                 $page = $form->getData();
 
-
-                $newUrl = $page['slug'];
-
-                if ($url && strcmp($url, $newUrl) !== 0)
-                {
-                    $app['filesystem']->remove($fileDir);
-                }
-
-
-                $newFileDir = $pagesDir . $newUrl;
-
-                $i = strrpos($newFileDir, '/');
-
-                $folderDir = substr($newFileDir, 0, $i);
-
-                if (!$app['filesystem']->exists($folderDir))
-                {
-                    $app['filesystem']->mkdir($folderDir);
-                }
-
-                file_put_contents($newFileDir, $page['content']);
+                $app['em']->persist($page);
+                $app['em']->flush();
 
                 return $app->redirect($app->url('list_pages'));
             }
         }
 
-        return $app->render('admin/edit.html.twig', [
+        return $app->render('admin/page/edit.html.twig', [
             'form' => $form->createView()
         ]);
     }

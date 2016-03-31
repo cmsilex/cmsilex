@@ -14,6 +14,13 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->arrayNode('db')
+                    ->children()
+                        ->scalarNode('path')
+                            ->defaultValue('../db.sqlite')
+                        ->end()
+                    ->end()
+                ->end()
                 ->scalarNode('pages_dir')
                     ->defaultValue('../pages/')
                 ->end()

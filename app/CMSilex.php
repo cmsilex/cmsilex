@@ -23,6 +23,7 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
 use CMSilex\Entities\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,6 +89,12 @@ class CMSilex extends Application
                 'bootstrap_3_layout.html.twig'
             ]
         ]);
+
+        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+            $types[] = new EntityType($app['manager_registry']);
+
+            return $types;
+        }));
 
         $app->extend('twig', $app->share(function (\Twig_Environment $twig) use ($app) {
             $isCallableFunction = new \Twig_SimpleFunction('is_callable', function ($subject) {
