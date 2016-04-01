@@ -75,7 +75,7 @@ class CMSilex extends Application
         );
 
         $app['security.access_rules'] = [
-            ['^/admin', 'ROLE_ADMIN'],
+            ['^/admin', 'ROLE_ADMIN', 'https'],
         ];
 
         $app->register(new TranslationServiceProvider(), array(
