@@ -39,7 +39,7 @@ class MediaController implements ControllerProviderInterface
         $form
             ->add('file', FileType::class)
             ->add('upload', SubmitType::class)
-            ->setAction($app->url('upload'))
+            ->setAction($app->path('upload'))
         ;
 
         return $app->render('media/index.html.twig', [
