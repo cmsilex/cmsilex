@@ -4,6 +4,8 @@ namespace CMSilex;
 
 use CMSilex\ControllerProviders\AdminController;
 use CMSilex\ControllerProviders\AuthenticationController;
+use CMSilex\ControllerProviders\FrontendController;
+use CMSilex\ControllerProviders\MediaController;
 use CMSilex\ControllerProviders\PageController;
 use CMSilex\Entities\Page;
 use CMSilex\ServiceProviders\ConfigServiceProvider;
@@ -15,6 +17,7 @@ use Silex\Application;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
+use Silex\Provider\SerializerServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
@@ -72,9 +75,7 @@ class CMSilex extends Application
         );
 
         $app['security.access_rules'] = [
-            ['^/login', 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['^/encode', 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['^/', 'ROLE_ADMIN'],
+            ['^/admin', 'ROLE_ADMIN'],
         ];
 
         $app->register(new TranslationServiceProvider(), array(
@@ -108,6 +109,8 @@ class CMSilex extends Application
             return $twig;
         }));
 
+        $app->register(new SerializerServiceProvider());
+
         $app->register(new TextileServiceProvider());
 
         $app->register(new WebProfilerServiceProvider(), [
@@ -132,8 +135,11 @@ class CMSilex extends Application
         $app = $this;
 
         $app->mount('/', new AuthenticationController());
-        $app->mount('/', new AdminController());
-        $app->mount('/', new PageController());
+        $app->mount('/admin/', new AdminController());
+        $app->mount('/admin/', new PageController());
+        $app->mount('/admin/media/', new MediaController());
+        $app->mount('/', new FrontendController());
+
 
         $app->get('/create', function (Application $app, Request $request) {
             exit;

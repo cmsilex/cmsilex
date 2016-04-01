@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1>CMSilex - Media</h1>
+        </div>
+        <div class="row">
+            <div id="media-container">
+
+            </div>
+        </div>
+        <div class="row">
+            {{ form(form) }}
+        </div>
+    </div>
+
+{% endblock body %}
+
+{% block javascripts %}
+    {% spaceless %}
+        {% verbatim %}
+            <script id="file-template" type="text/x-handlebars-template">
+                {{#each files}}
+                <div class="col-sm-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">{{ name }}</div>
+                        <div class="panel-body">
+                            <img class="img-thumbnail" src="/uploads/{{ path }}"/>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </script>
+        {% endverbatim %}
+    {% endspaceless %}
+    <script>
+        var source   = $("#file-template").html();
+        var template = Handlebars.compile(source);
+        $(function () {
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                submitForm(this);
+            });
+            updateMedia();
+        });
+        function updateMedia () {
+            $.get("{{ url('get_media') }}").success(function (data) {
+                var context = data;
+                console.log(context);
+                var html = template(context);
+                $('#media-container').html(html);
+            });
+        }
+
+        function submitForm (form) {
+            $.ajax({
+                type: "POST",
+                url: $(form).attr('action'),
+                dataType: "JSON",
+                data: new FormData(form),
+                processData: false,
+                contentType: false,
+                success: function(data)
+                {
+                    updateMedia();
+                }
+            });
+        }
+    </script>
+{% endblock javascripts %}
