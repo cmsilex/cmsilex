@@ -45,7 +45,7 @@
             updateMedia();
         });
         function updateMedia () {
-            $.get("{{ url('get_media') }}").success(function (data) {
+            $.get("{{ path('get_media') }}").success(function (data) {
                 var context = data;
                 console.log(context);
                 var html = template(context);
