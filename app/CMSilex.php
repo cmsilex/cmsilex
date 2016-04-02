@@ -7,6 +7,7 @@ use CMSilex\ControllerProviders\AuthenticationController;
 use CMSilex\ControllerProviders\FrontendController;
 use CMSilex\ControllerProviders\MediaController;
 use CMSilex\ControllerProviders\PageController;
+use CMSilex\ControllerProviders\PostController;
 use CMSilex\Entities\Page;
 use CMSilex\ServiceProviders\ConfigServiceProvider;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
@@ -88,7 +89,8 @@ class CMSilex extends Application
             'twig.path' => __DIR__ . '/../resources/views',
             'twig.form.templates' => [
                 'bootstrap_3_layout.html.twig'
-            ]
+            ],
+            'twig.strict_variables' => false
         ]);
 
         $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
@@ -137,6 +139,7 @@ class CMSilex extends Application
         $app->mount('/', new AuthenticationController());
         $app->mount('/admin/', new AdminController());
         $app->mount('/admin/', new PageController());
+        $app->mount('/admin/', new PostController());
         $app->mount('/admin/media/', new MediaController());
         $app->mount('/', new FrontendController());
 

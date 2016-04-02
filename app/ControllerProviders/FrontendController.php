@@ -27,10 +27,13 @@ class FrontendController implements ControllerProviderInterface
             $urlParts = new ArrayCollection(explode('/', $url));
             $last = $urlParts->last();
             $page = $app['em']->getRepository('CMSilex\Entities\Page')->findOneBy(['slug' => $last]);
-            
+
+            $posts = $app['em']->getRepository('CMSilex\Entities\Post')->findAll();
+
             if ($page) {
                 return $app->render('frontend/page.html.twig', [
-                    'page' => $page
+                    'page' => $page,
+                    'posts' => $posts
                 ]);
             }
         }

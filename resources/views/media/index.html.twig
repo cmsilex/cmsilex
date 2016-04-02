@@ -3,11 +3,13 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <h1>CMSilex - Media</h1>
+            <div>
+                <h1>CMSilex - Media</h1>
+            </div>
         </div>
         <div class="row">
             <div id="media-container">
-
+                <h3>Loading...</h3>
             </div>
         </div>
         <div class="row">
@@ -16,6 +18,14 @@
     </div>
 
 {% endblock body %}
+
+{% block styles %}
+    <style>
+        #media-container div:nth-child(4n+1) {
+            clear: both;
+        }
+    </style>
+{% endblock styles %}
 
 {% block javascripts %}
     {% spaceless %}
@@ -27,6 +37,11 @@
                         <div class="panel-heading">{{ name }}</div>
                         <div class="panel-body">
                             <img class="img-thumbnail" src="/uploads/{{ path }}"/>
+                        </div>
+                        <div class="panel-footer">
+                        <button type="button" data-id="{{ id }}" class="delete-button btn btn-default btn-xs">
+                          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
+                        </button>
                         </div>
                     </div>
                 </div>
@@ -41,7 +56,20 @@
             $('form').on('submit', function (e) {
                 e.preventDefault();
                 submitForm(this);
+                this.reset();
             });
+            $('#media-container').on('click', '.delete-button', function () {
+                var id = $(this).data('id');
+                console.log(id);
+                if (confirm("Delete this image?") == true) {
+                    console.log("deleting");
+                    $.post("{{ path('delete_media') }}", {id: id}).success(function (data) {
+                        console.log(data);
+                        updateMedia();
+                    });
+                }
+            });
+
             updateMedia();
         });
         function updateMedia () {

@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,6 +18,9 @@ class PageType extends AbstractType
     {
         $builder
             ->add('title')
+            ->add('subtitle', TextType::class, [
+                'required' => false
+            ])
             ->add('slug')
             ->add('parentPage', EntityType::class, [
                 'class' => Page::class,

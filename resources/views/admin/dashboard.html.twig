@@ -1,11 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>CMSIlex</h1>
-    <p>
-        <a href="{{ url('list_pages') }}">Pages</a>
-    </p>
-    <p>
-        <a href="{{ url('media') }}">Media</a>
-    </p>
+    <div class="container">
+        <h1>CMSIlex</h1>
+        <p>
+            <a href="{{ url('list_pages') }}">Pages</a>
+        </p>
+        <p>
+            <a href="{{ url('list_posts') }}">Posts</a>
+        </p>
+        <p>
+            <a href="{{ url('media') }}">Media</a>
+        </p>
+    </div>
 {% endblock body %}

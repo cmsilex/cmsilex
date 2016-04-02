@@ -19,10 +19,6 @@ class PageController implements ControllerProviderInterface
             ->bind('list_pages')
         ;
 
-        $controller->get('/pages/publish', 'CMSilex\ControllerProviders\PageController::publishAction')
-            ->bind('publish')
-        ;
-
         $controller->get('/pages/new', 'CMSilex\ControllerProviders\PageController::editPageAction')
             ->method('POST|GET')
             ->bind('new_page')
@@ -35,25 +31,6 @@ class PageController implements ControllerProviderInterface
         ;
 
         return $controller;
-    }
-
-    public function publishAction (Application $app, Request $request)
-    {
-        $inputDir = $app['config']['pages_dir'];
-        $outputDir = "../public/";
-        $cmdOutput = [];
-
-        try {
-            $cmd = "sphinx-build $inputDir $outputDir";
-            exec($cmd, $cmdOutput);
-        } catch (\Exception $e)
-        {
-            dump($e);
-            exit;
-        }
-
-        dump($cmdOutput);
-        return $app->redirect($app->url('list_pages'));
     }
 
     public function listPagesAction (Application $app, Request $request)

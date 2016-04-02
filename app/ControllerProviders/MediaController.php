@@ -27,6 +27,10 @@ class MediaController implements ControllerProviderInterface
         ->bind('get_media')
         ;
 
+        $controller->post('/delete', 'CMSilex\ControllerProviders\MediaController::deleteMediaAction')
+        ->bind('delete_media')
+        ;
+
         return $controller;
     }
 
@@ -53,6 +57,21 @@ class MediaController implements ControllerProviderInterface
         $files = $app['em']->getRepository('CMSilex\Entities\File')->findAll();
         $files = $app['serializer']->normalize(compact('files'));
         return $app->json($files);
+    }
+
+    public function deleteMediaAction (Application $app, Request $request)
+    {
+        $id = $request->request->get('id');
+        $media = $app['em']->find('CMSilex\Entities\File', $id);
+        $uploadsDir = "./uploads/";
+        $app['filesystem']->remove($uploadsDir . $media->getPath());
+        $app['em']->remove($media);
+        $app['em']->flush();
+
+        return $app->json([
+            'success' => true,
+            'file' => $app['serializer']->normalize($media)
+        ]);
     }
 
     public function uploadAction (Application $app, Request $request)
