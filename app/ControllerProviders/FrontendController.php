@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FrontendController implements ControllerProviderInterface
 {
@@ -39,11 +40,13 @@ class FrontendController implements ControllerProviderInterface
 
                 if ($post) {
                     return $app->render('frontend/page.html.twig', [
-                        'page' => $post
+                        'page' => $post,
+                        'posts' => []
                     ]);
                 }
             }
         }
-        dump($urlParts);exit;
+        
+        throw new NotFoundHttpException();
     }
 }
