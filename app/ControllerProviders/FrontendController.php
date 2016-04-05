@@ -15,7 +15,7 @@ class FrontendController implements ControllerProviderInterface
 
         $controller->get('/{url}', 'CMSilex\ControllerProviders\FrontendController::indexAction')
             ->value('url', 'home')
-            ->assert('url', '[^/_profiler]+')
+            ->assert('url', '[^/_profiler].+')
         ;
         
         return $controller;
@@ -35,6 +35,14 @@ class FrontendController implements ControllerProviderInterface
                     'page' => $page,
                     'posts' => $posts
                 ]);
+            } else {
+                $post = $app['em']->getRepository('CMSilex\Entities\Post')->findOneBy(['slug' => $last]);
+
+                if ($post) {
+                    return $app->render('frontend/page.html.twig', [
+                        'page' => $post
+                    ]);
+                }
             }
         }
         dump($urlParts);exit;
