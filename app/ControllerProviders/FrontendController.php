@@ -15,7 +15,6 @@ class FrontendController implements ControllerProviderInterface
 
         $controller->get('/{url}', 'CMSilex\ControllerProviders\FrontendController::indexAction')
             ->value('url', 'home')
-            ->assert('url', '.+')
         ;
         
         return $controller;
