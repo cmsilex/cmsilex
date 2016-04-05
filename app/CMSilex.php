@@ -137,9 +137,9 @@ class CMSilex extends Application
         $app = $this;
 
         $app->mount('/', new AuthenticationController());
-        $app->mount('/admin/', new AdminController());
-        $app->mount('/admin/', new PageController());
-        $app->mount('/admin/', new PostController());
+        $app->mount('/admin', new AdminController());
+        $app->mount('/admin', new PageController());
+        $app->mount('/admin', new PostController());
         $app->mount('/admin/media/', new MediaController());
         $app->mount('/', new FrontendController());
 
