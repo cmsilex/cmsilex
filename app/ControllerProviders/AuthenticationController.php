@@ -4,6 +4,9 @@ namespace CMSilex\ControllerProviders;
 
 use CMSilex\Entities\User;
 use Silex\ControllerProviderInterface;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -37,35 +40,47 @@ class AuthenticationController implements ControllerProviderInterface
         ->bind('login')
         ;
 
-
-        $controllers->match('/encode', function (Application $app, Request $request) {
-            $form = $app['form.factory']->createNamedBuilder(null)
-                ->add('password')
-                ->add('submit', SubmitType::class)
-                ->getForm()
+        $controllers->match('/register', function (Application $app, Request $request) {
+            $builder = $app->form();
+            $builder
+                ->add('email', EmailType::class)
+                ->add('password', RepeatedType::class, [
+                    'type' => PasswordType::class,
+                    'first_options' => [
+                        'label' => 'Password'
+                    ],
+                    'second_options' => [
+                        'label' => 'Repeat Password'
+                    ]
+                ])
+                ->add('register', SubmitType::class)
             ;
+            $form = $builder->getForm();
 
             $form->handleRequest($request);
-
-            $password = null;
-
-            if ($form->isValid() && $form->isSubmitted())
+            if ($form->isSubmitted() && $form->isValid())
             {
-                $tmpUser = new User();
-                $data = $form->getData();
-                $password = $app->encodePassword($tmpUser, $data['password']);
+                $userInfo = $form->getData();
+
+                $newUser = new User();
+                $password = $app->encodePassword($newUser, $userInfo['password']);
+                $newUser->setUsername($userInfo['email']);
+                $newUser->setPassword($password);
+                $newUser->setEnabled(true);
+                $newUser->setAccountNonExpired(true);
+                $newUser->setAccountNonLocked(true);
+                $newUser->setCredentialsNonExpired(true);
+                $newUser->setRoles(['ROLE_USER']);
+                $app['em']->persist($newUser);
+                $app['em']->flush();
+
+                return $app->redirect($app->url('login'));
             }
 
-            $form = $form->createView();
-
-            return $app->render('authentication/encode.html.twig', [
-                'form' => $form,
-                'password' => $password
+            return $app->render('authentication/register.html.twig', [
+                'form' => $form->createView()
             ]);
-        })
-        ->method("POST|GET")
-        ->bind('encode')
-        ;
+        });
 
         return $controllers;
     }

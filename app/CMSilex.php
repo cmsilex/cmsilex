@@ -31,6 +31,10 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 
@@ -142,53 +146,6 @@ class CMSilex extends Application
         $app->mount('/admin', new PageController());
         $app->mount('/admin', new PostController());
         $app->mount('/admin/media/', new MediaController());
-
-
-        $app->match('/register', function () use ($app) {
-            $builder = $app->form();
-            $builder
-                ->add('name')
-            ;
-            $form = $builder->getForm();
-            return $app->render('authentication/register.html.twig', [
-                'form' => $form->createView()
-            ]);
-        });
-
-        $app->get('/create', function (Application $app, Request $request) {
-            $user = new User();
-            $user->setUsername('admin');
-            $user->setAccountNonExpired(true);
-            $user->setAccountNonLocked(true);
-            $user->setCredentialsNonExpired(true);
-            $user->setEnabled(true);
-            $user->setRoles(['ROLE_ADMIN']);
-            $user->setPassword($app->encodePassword($user, "foo"));
-            dump($user->getPassword());exit;
-            $user->setSalt(null);
-            try {
-                dump($user);
-                $success = $app['em']->persist($user);
-                dump($success);
-                $success = $app['em']->flush();
-                dump($success);
-
-                $page = new Page();
-                $page->setSlug('lol');
-                $page->setTitle("LOL");
-
-
-                $success = $app['em']->persist($page);
-                dump($success);
-                $success = $app['em']->flush();
-                dump($success);
-                dump($page->getId());
-            } catch (\Exception $e) {
-                dump($e);
-            }
-
-            return $app->json($user);
-        });
 
         $app->mount('/', new FrontendController());
 

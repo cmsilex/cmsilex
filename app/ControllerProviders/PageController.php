@@ -40,7 +40,11 @@ class PageController implements ControllerProviderInterface
         return $app->render('admin/page/list.html.twig', [
             'rows' => $pages,
             'columns' => [
-                'title',
+                'title' => function (Page $page) use ($app) {
+                    return '<a target="_blank" href="' .$app->url('page',
+                        ['url' => $page->getSlug()]
+                    ) . '">' . $page->getTitle() . '</a>';
+                },
                 'slug',
                 'edit' => function(Page $page) use ($app) {
                     return '<a href="' .$app->url('edit_page',
