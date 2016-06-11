@@ -28,6 +28,7 @@ use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
 use CMSilex\Entities\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,9 +69,9 @@ class CMSilex extends Application
                 'pattern' => '/',
                 'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
                 'logout' => array('logout_path' => '/logout', 'invalidate_session' => true),
-                'users' => [
-                    $app['config']['username'] => ['ROLE_ADMIN', $app['config']['password']],
-                ],
+                'users' => function () use ($app) {
+                    return new EntityUserProvider($app['manager_registry'], User::class, 'username');
+                },
                 'anonymous' => true,
             ),
         );
@@ -141,11 +142,20 @@ class CMSilex extends Application
         $app->mount('/admin', new PageController());
         $app->mount('/admin', new PostController());
         $app->mount('/admin/media/', new MediaController());
-        $app->mount('/', new FrontendController());
 
+
+        $app->match('/register', function () use ($app) {
+            $builder = $app->form();
+            $builder
+                ->add('name')
+            ;
+            $form = $builder->getForm();
+            return $app->render('authentication/register.html.twig', [
+                'form' => $form->createView()
+            ]);
+        });
 
         $app->get('/create', function (Application $app, Request $request) {
-            exit;
             $user = new User();
             $user->setUsername('admin');
             $user->setAccountNonExpired(true);
@@ -179,5 +189,8 @@ class CMSilex extends Application
 
             return $app->json($user);
         });
+
+        $app->mount('/', new FrontendController());
+
     }
 }

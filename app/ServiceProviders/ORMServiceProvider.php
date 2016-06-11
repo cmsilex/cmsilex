@@ -20,10 +20,7 @@ class ORMServiceProvider implements ServiceProviderInterface
 
         $app['orm.cache_dir'] = __DIR__ . '/../../../../../storage/framework/cache/orm';
 
-        $app['config.database'] = [
-            'driver'   => 'pdo_sqlite',
-            'path' => __DIR__ . "/../../storage/db.sqlite"
-        ];
+        $app['config.database'] = $app['config']['db'];
 
         $app['em'] = $app->share(function () use ($app) {
 
