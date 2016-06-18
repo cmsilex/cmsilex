@@ -5,7 +5,7 @@ namespace CMSilex\Entities;
 /**
  * @Entity
  */
-class Page extends BlogMappedSuperclass
+class Page extends BlogItem
 {
 
 }

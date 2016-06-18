@@ -4,10 +4,11 @@ namespace CMSilex\Entities;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @MappedSuperclass
+ * @Entity
+ * @InheritanceType("SINGLE_TABLE")
  * @HasLifecycleCallbacks
  */
-class BlogMappedSuperclass
+class BlogItem
 {
     /** @Column(type="integer") @Id @GeneratedValue */
     protected $id;

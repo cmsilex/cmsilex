@@ -6,10 +6,12 @@ use CMSilex\ControllerProviders\AdminController;
 use CMSilex\ControllerProviders\AuthenticationController;
 use CMSilex\ControllerProviders\FrontendController;
 use CMSilex\ControllerProviders\MediaController;
+use CMSilex\ControllerProviders\MenuController;
 use CMSilex\ControllerProviders\PageController;
 use CMSilex\ControllerProviders\PostController;
 use CMSilex\Entities\Page;
 use CMSilex\ServiceProviders\ConfigServiceProvider;
+use CMSilex\ServiceProviders\ConverterServiceProvider;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
 use CMSilex\ServiceProviders\RSTServiceProvider;
@@ -48,6 +50,8 @@ class CMSilex extends Application
     public function bootstrap()
     {
         $app = $this;
+
+        $app['dir.base'] = __DIR__ . "/../../../../";
 
         $app->register(new ConfigServiceProvider());
 
@@ -98,6 +102,34 @@ class CMSilex extends Application
             'twig.strict_variables' => false
         ]);
 
+        $app['twig.loader.filesystem']->addPath($app['dir.base'] . "/themes/" . $app['config']['theme'], 'theme');
+
+        $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig) {
+            $twig->addTest(new \Twig_SimpleTest('callable',function ($variable){
+                return is_callable($variable);
+            }));
+
+            $twig->addFunction(new \Twig_SimpleFunction('is_callable', function ($variable){
+                return is_callable($variable);
+            }));
+
+            $twig->addFunction(new \Twig_SimpleFunction('call_user_func', function ($callable, $params = null) {
+                return call_user_func($callable, $params);
+            }));
+
+            $propFunction = new \Twig_SimpleFilter('prop', function ($object, $property) use ($twig) {
+                if (is_callable($property)) {
+                    return call_user_func($property, $object);
+                } else {
+                    return  "LOL";
+                }
+            }, ['is_safe' => array('html')]);
+
+            $twig->addFilter($propFunction);
+
+            return $twig;
+        }));
+
         $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
             $types[] = new EntityType($app['manager_registry']);
 
@@ -135,6 +167,8 @@ class CMSilex extends Application
         });
 
         $app->register(new RSTServiceProvider());
+
+        $app->register(new ConverterServiceProvider());
         
         $app->setRoutes();
     }
@@ -147,6 +181,7 @@ class CMSilex extends Application
         $app->mount('/admin', new AdminController());
         $app->mount('/admin', new PageController());
         $app->mount('/admin', new PostController());
+        $app->mount('/admin/menus/', new MenuController());
         $app->mount('/admin/media/', new MediaController());
 
         $app->mount('/', new FrontendController());

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div>
+            <h1>List</h1>
+        </div>
+        <div>
+            <a class="btn btn-primary" href="{{ url('edit_menu') }}">New</a>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                {% for columnName, columnProperty in columns %}
+                    <th>
+                        {{- columnName -}}
+                    </th>
+                {% endfor %}
+            </tr>
+            </thead>
+            {% for item in items %}
+                <tr>
+                    {% for columnProperty in columns %}
+                        <th>
+                            {% if columnProperty is callable %}
+                                {{ call_user_func(columnProperty, item)|raw }}
+                            {% else %}
+                                {{ attribute(item, columnProperty) }}
+                            {% endif %}
+                        </th>
+                    {% endfor %}
+                </tr>
+            {% else %}
+                <tr>
+                    <td>No Items</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div>
+            <a class="btn btn-primary" href="{{ url('edit_menu') }}">New</a>
+        </div>
+    </div>
+{% endblock body %}

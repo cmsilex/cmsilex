@@ -32,7 +32,7 @@ class FrontendController implements ControllerProviderInterface
             $posts = $app['em']->getRepository('CMSilex\Entities\Post')->findAll();
 
             if ($page) {
-                return $app->render('frontend/page.html.twig', [
+                return $app->render('@theme/page.html.twig', [
                     'page' => $page,
                     'posts' => $posts
                 ]);

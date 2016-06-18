@@ -33,6 +33,8 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('debug')
                     ->defaultFalse()
                 ->end()
+                ->scalarNode('theme')
+                ->end()
             ->end()
         ;
 
