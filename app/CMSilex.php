@@ -121,7 +121,9 @@ class CMSilex extends Application
         $app->register(new TextileServiceProvider());
 
         $app->register(new WebProfilerServiceProvider(), [
-            'profiler.cache_dir' => __DIR__ . '/../storage/framework/cache/profiler'
+            'profiler.cache_dir' => './../storage/framework/cache/profiler',
+            'web_profiler.debug_toolbar.enable' => $app['debug'],
+            'profiler.mount_prefix' => '/admin/_profiler'
         ]);
         
         $app['finder'] = $app->share(function () {
