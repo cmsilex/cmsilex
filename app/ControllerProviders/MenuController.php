@@ -25,6 +25,11 @@ class MenuController implements ControllerProviderInterface
             ->convert('menu', 'converter:convertEntity')
             ->method('GET|POST')
         ;
+
+        $controller->post('/delete/{id}', 'CMSilex\ControllerProviders\MenuController::deleteMenuAction')
+            ->bind('delete_menu')
+            ->convert('menu', 'converter:convertEntity')
+        ;
         
         return $controller;
     }
@@ -37,10 +42,14 @@ class MenuController implements ControllerProviderInterface
             'Name' => 'name',
             'Edit' => function (Menu $menu) use ($app) {
                 return '<a href="' . $app->url('edit_menu', ['id' => $menu->getId()]) . '">Edit</a>';
+            },
+            'Delete' => function (Menu $menu) use ($app) {
+                return '<form method="post" action="'. $app->url('delete_menu', ['id' => $menu->getId()]) . '"><input class="btn btn-sm btn-danger" type="submit" value="Delete"></form>';
             }
         ];
 
         return $app->render('admin/list.html.twig', [
+            'heading' => 'Menus',
             'items' => $menus,
             'columns' => $columns
         ]);
@@ -55,11 +64,7 @@ class MenuController implements ControllerProviderInterface
         if ($form->isSubmitted() && $form->isValid())
         {
             $formData = $form->getData();
-
-            dump($formData);
-
             $app['em']->persist($formData);
-
             $app['em']->flush();
 
             return $app->redirect($app->url('edit_menu', ['id' => $formData->getId()]));
@@ -68,6 +73,13 @@ class MenuController implements ControllerProviderInterface
         return $app->render('admin/edit.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    public function deleteMenuAction (Menu $menu, Application $app)
+    {
+        $app['em']->remove($menu);
+        $app['em']->flush();
+        return $app->redirect($app->url('list_menus'));
     }
     
 }

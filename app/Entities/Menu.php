@@ -55,7 +55,6 @@ class Menu
 
     public function addMenuItem(MenuItem $menuItem) {
         $position = count($this->menuItems);
-        dump($position);
         $menuItem->setPosition($position);
         $this->menuItems[$position] = $menuItem;
         $menuItem->setMenu($this);

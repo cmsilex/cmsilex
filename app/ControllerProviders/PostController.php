@@ -38,6 +38,7 @@ class PostController implements ControllerProviderInterface
         $posts = $app['em']->getRepository('CMSilex\Entities\Post')->findAll();
 
         return $app->render('admin/post/list.html.twig', [
+            'heading' => 'Posts',
             'rows' => $posts,
             'columns' => [
                 'title',

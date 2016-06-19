@@ -1,0 +1,9 @@
+<ul class="nav navbar-nav">
+    {% for menuItem in menu.menuItems %}
+        {% if menuItem.blogItem %}
+            <li><a href="{{ url('page', {'url': menuItem.blogItem.slug}) }}">{{ menuItem.label }}</a></li>
+        {% else %}
+            <li><a href="#">{{ menuItem.label }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>

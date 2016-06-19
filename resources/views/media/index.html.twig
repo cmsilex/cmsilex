@@ -1,23 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
-{% block body %}
-    <div class="container">
-        <div class="row">
-            <div>
-                <h1>CMSilex - Media</h1>
-            </div>
-        </div>
-        <div class="row">
+{% block page_content %}
+        <div>
             <div id="media-container">
                 <h3>Loading...</h3>
             </div>
         </div>
-        <div class="row">
+        <div>
             {{ form(form) }}
         </div>
-    </div>
-
-{% endblock body %}
+{% endblock page_content %}
 
 {% block styles %}
     <style>

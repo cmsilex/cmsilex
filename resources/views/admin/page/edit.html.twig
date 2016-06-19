@@ -1,6 +1,6 @@
-{% extends "base.html.twig" %}
+{% extends "admin/base.html.twig" %}
 {% block javascripts %}
-    <script src="/ckeditor/ckeditor.js"></script>
+    <script src="/cmsilex/ckeditor/ckeditor.js"></script>
     <script>
         $(function () {
             //CKEDITOR.plugins.addExternal( 'imageuploader', '/imageuploader/', 'plugin.js' );
@@ -17,10 +17,8 @@
     </style>
 {% endblock styles %}
 
-{% block body %}
-    <div class="container">
-        <div class="row">
-            {{ form(form) }}
-        </div>
+{% block page_content %}
+    <div>
+        {{ form(form) }}
     </div>
-{% endblock body %}
+{% endblock page_content %}

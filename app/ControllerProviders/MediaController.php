@@ -48,7 +48,8 @@ class MediaController implements ControllerProviderInterface
 
         return $app->render('media/index.html.twig', [
             'form' => $form->getForm()->createView(),
-            'files' => $files
+            'files' => $files,
+            'heading' => 'Media'
         ]);
     }
 

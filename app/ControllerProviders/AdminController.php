@@ -19,7 +19,9 @@ class AdminController implements ControllerProviderInterface
 
         $controller->get('/', function (Application $app, Request $request) {
             return $app['twig']->render('admin/dashboard.html.twig');
-        });
+        })
+        ->bind('dashboard')
+        ;
 
         $controller->match('/settings', function (Application $app, Request $request) {
 

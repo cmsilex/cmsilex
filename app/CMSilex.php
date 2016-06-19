@@ -16,6 +16,7 @@ use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
 use CMSilex\ServiceProviders\RSTServiceProvider;
 use CMSilex\ServiceProviders\TextileServiceProvider;
+use CMSilex\ServiceProviders\ThemeServiceProvider;
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
@@ -169,6 +170,8 @@ class CMSilex extends Application
         $app->register(new RSTServiceProvider());
 
         $app->register(new ConverterServiceProvider());
+
+        $app->register(new ThemeServiceProvider());
         
         $app->setRoutes();
     }

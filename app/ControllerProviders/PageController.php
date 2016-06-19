@@ -38,6 +38,7 @@ class PageController implements ControllerProviderInterface
         $pages = $app['em']->getRepository('CMSilex\Entities\Page')->findAll();
 
         return $app->render('admin/page/list.html.twig', [
+            'heading' => 'Pages',
             'rows' => $pages,
             'columns' => [
                 'title' => function (Page $page) use ($app) {

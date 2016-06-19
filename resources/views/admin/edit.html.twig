@@ -1,14 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
-{% block body %}
-    <div class="container">
+{% block page_content %}
         <div>
             {{ form_start(form) }}
             {{ form_rest(form) }}
             <input type="submit" class="btn btn-primary" value="save">
             {{ form_end(form) }}
         </div>
-    </div>
+{% endblock page_content %}
+
+{% block javascripts %}
     <script>
         function addTagForm($collectionHolder, $newLinkLi) {
             // Get the data-prototype explained earlier
@@ -55,4 +56,4 @@
             });
         });
     </script>
-{% endblock body %}
+{% endblock javascripts %}
