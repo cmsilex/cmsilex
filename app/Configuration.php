@@ -35,6 +35,9 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('theme')
                 ->end()
+                ->booleanNode('register')
+                    ->defaultFalse()
+                ->end()
             ->end()
         ;
 

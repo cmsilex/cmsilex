@@ -40,47 +40,49 @@ class AuthenticationController implements ControllerProviderInterface
         ->bind('login')
         ;
 
-        $controllers->match('/register', function (Application $app, Request $request) {
-            $builder = $app->form();
-            $builder
-                ->add('email', EmailType::class)
-                ->add('password', RepeatedType::class, [
-                    'type' => PasswordType::class,
-                    'first_options' => [
-                        'label' => 'Password'
-                    ],
-                    'second_options' => [
-                        'label' => 'Repeat Password'
-                    ]
-                ])
-                ->add('register', SubmitType::class)
-            ;
-            $form = $builder->getForm();
+        if ($app['config']['register'] == true) {
+            $controllers->match('/register', function (Application $app, Request $request) {
+                $builder = $app->form();
+                $builder
+                    ->add('email', EmailType::class)
+                    ->add('password', RepeatedType::class, [
+                        'type' => PasswordType::class,
+                        'first_options' => [
+                            'label' => 'Password'
+                        ],
+                        'second_options' => [
+                            'label' => 'Repeat Password'
+                        ]
+                    ])
+                    ->add('register', SubmitType::class)
+                ;
+                $form = $builder->getForm();
 
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid())
-            {
-                $userInfo = $form->getData();
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid())
+                {
+                    $userInfo = $form->getData();
 
-                $newUser = new User();
-                $password = $app->encodePassword($newUser, $userInfo['password']);
-                $newUser->setUsername($userInfo['email']);
-                $newUser->setPassword($password);
-                $newUser->setEnabled(true);
-                $newUser->setAccountNonExpired(true);
-                $newUser->setAccountNonLocked(true);
-                $newUser->setCredentialsNonExpired(true);
-                $newUser->setRoles(['ROLE_USER']);
-                $app['em']->persist($newUser);
-                $app['em']->flush();
+                    $newUser = new User();
+                    $password = $app->encodePassword($newUser, $userInfo['password']);
+                    $newUser->setUsername($userInfo['email']);
+                    $newUser->setPassword($password);
+                    $newUser->setEnabled(true);
+                    $newUser->setAccountNonExpired(true);
+                    $newUser->setAccountNonLocked(true);
+                    $newUser->setCredentialsNonExpired(true);
+                    $newUser->setRoles(['ROLE_USER']);
+                    $app['em']->persist($newUser);
+                    $app['em']->flush();
 
-                return $app->redirect($app->url('login'));
-            }
+                    return $app->redirect($app->url('login'));
+                }
 
-            return $app->render('authentication/register.html.twig', [
-                'form' => $form->createView()
-            ]);
-        });
+                return $app->render('authentication/register.html.twig', [
+                    'form' => $form->createView()
+                ]);
+            });
+        }
 
         return $controllers;
     }
