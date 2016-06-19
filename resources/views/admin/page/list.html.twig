@@ -17,7 +17,7 @@
                     {% for row in rows %}
                         <tr>
                             {% for column in columns %}
-                                {% if is_callable(column) %}
+                                {% if column is callable %}
                                     <td>{{ call_user_func(column, row)|raw }}</td>
                                 {% else %}
                                     <td>{{ attribute(row, column) }}</td>

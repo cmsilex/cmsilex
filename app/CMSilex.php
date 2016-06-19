@@ -137,18 +137,6 @@ class CMSilex extends Application
             return $types;
         }));
 
-        $app->extend('twig', $app->share(function (\Twig_Environment $twig) use ($app) {
-            $isCallableFunction = new \Twig_SimpleFunction('is_callable', function ($subject) {
-                return is_callable($subject);
-            });
-            $twig->addFunction($isCallableFunction);
-            $callUserFuncFunction = new \Twig_SimpleFunction('call_user_func', function ($subject, $param) {
-                return call_user_func($subject, $param);
-            });
-            $twig->addFunction($callUserFuncFunction);
-            return $twig;
-        }));
-
         $app->register(new SerializerServiceProvider());
 
         $app->register(new TextileServiceProvider());
@@ -172,7 +160,7 @@ class CMSilex extends Application
         $app->register(new ConverterServiceProvider());
 
         $app->register(new ThemeServiceProvider());
-        
+
         $app->setRoutes();
     }
 
