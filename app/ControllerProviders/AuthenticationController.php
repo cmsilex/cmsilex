@@ -23,7 +23,7 @@ class AuthenticationController implements ControllerProviderInterface
         ;
 
         if ($app['config']['register'] == true) {
-            $controllers->match('/register', 'CMSilex\ControllerProviders\AuthenticationController::loginAction');
+            $controllers->match('/register', 'CMSilex\ControllerProviders\AuthenticationController::registerAction');
         }
 
         return $controllers;
