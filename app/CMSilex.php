@@ -4,12 +4,14 @@ namespace CMSilex;
 
 use CMSilex\ControllerProviders\AdminController;
 use CMSilex\ControllerProviders\AuthenticationController;
+use CMSilex\ControllerProviders\CMSController;
 use CMSilex\ControllerProviders\FrontendController;
 use CMSilex\ControllerProviders\MediaController;
 use CMSilex\ControllerProviders\MenuController;
 use CMSilex\ControllerProviders\PageController;
 use CMSilex\ControllerProviders\PostController;
 use CMSilex\Entities\Page;
+use CMSilex\ServiceProviders\CMSServiceProvider;
 use CMSilex\ServiceProviders\ConfigServiceProvider;
 use CMSilex\ServiceProviders\ConverterServiceProvider;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
@@ -32,6 +34,8 @@ use Silex\Provider\WebProfilerServiceProvider;
 use CMSilex\Entities\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
+use Symfony\Component\Debug\ErrorHandler;
+use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -57,6 +61,10 @@ class CMSilex extends Application
         $app->register(new ConfigServiceProvider());
 
         $app['debug'] = $app['config']['debug'];
+
+        ErrorHandler::register();
+        ExceptionHandler::register($app['debug']);
+
         $app->register(new UrlGeneratorServiceProvider());
 
         $app->register(new HttpFragmentServiceProvider());
@@ -118,16 +126,6 @@ class CMSilex extends Application
                 return call_user_func($callable, $params);
             }));
 
-            $propFunction = new \Twig_SimpleFilter('prop', function ($object, $property) use ($twig) {
-                if (is_callable($property)) {
-                    return call_user_func($property, $object);
-                } else {
-                    return  "LOL";
-                }
-            }, ['is_safe' => array('html')]);
-
-            $twig->addFilter($propFunction);
-
             return $twig;
         }));
 
@@ -161,6 +159,8 @@ class CMSilex extends Application
 
         $app->register(new ThemeServiceProvider());
 
+        $app->register(new CMSServiceProvider());
+
         $app->setRoutes();
     }
 
@@ -170,10 +170,8 @@ class CMSilex extends Application
 
         $app->mount('/', new AuthenticationController());
         $app->mount('/admin', new AdminController());
-        $app->mount('/admin', new PageController());
-        $app->mount('/admin', new PostController());
-        $app->mount('/admin/menus/', new MenuController());
         $app->mount('/admin/media/', new MediaController());
+        $app->mount('/admin/cms/', new CMSController());
 
         $app->mount('/', new FrontendController());
 

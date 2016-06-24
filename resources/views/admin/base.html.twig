@@ -286,7 +286,12 @@
                     <li>
                         <a href="{{ url('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
+                    {% for cmsEntity in app.cms.cmsEntities %}
                     <li>
+                        <a href="{{ url('cms_list', {entityName: cmsEntity}) }}"><i class="fa fa-table fa-fw"></i> {{ cmsEntity|title }}</a>
+                    </li>
+                    {% endfor %}
+                    {#<li>
                         <a href="{{ url('list_pages') }}"><i class="fa fa-table fa-fw"></i> Pages</a>
                     </li>
                     <li>
@@ -294,7 +299,7 @@
                     </li>
                     <li>
                         <a href="{{ url('list_menus') }}"><i class="fa fa-table fa-fw"></i> Menus</a>
-                    </li>
+                    </li>#}
                     <li>
                         <a href="{{ url('media') }}"><i class="fa fa-table fa-fw"></i> Media</a>
                     </li>

@@ -2,11 +2,13 @@
 
 namespace CMSilex\ControllerProviders;
 
+use CMSilex\Entities\Post;
 use Doctrine\Common\Collections\ArrayCollection;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class FrontendController implements ControllerProviderInterface
 {
@@ -17,6 +19,22 @@ class FrontendController implements ControllerProviderInterface
         $controller->get('/{url}', 'CMSilex\ControllerProviders\FrontendController::indexAction')
             ->value('url', 'home')
             ->bind('page')
+        ;
+
+        $controller->get('/{year}/{month}/{day}/{slug}', 'CMSilex\ControllerProviders\FrontendController::getPostAction')
+            ->assert('year', '[0-9]{4}')
+            ->assert('month', '[0-9]{2}')
+            ->assert('day', '[0-9]{2}')
+            ->bind('post')
+            ->convert('post', function ($post, Request $request) use ($app) {
+                $post = $app['em']->getRepository('CMSilex\Entities\Post')->findOneBySlug($request->get('slug'));
+                if (!$post)
+                {
+                    throw new ResourceNotFoundException();
+                } else {
+                    return $post;
+                }
+            })
         ;
         
         return $controller;
@@ -49,5 +67,12 @@ class FrontendController implements ControllerProviderInterface
         }
         
         throw new NotFoundHttpException();
+    }
+
+    public function getPostAction (Post $post, Application $app, Request $request)
+    {
+        return $app->render('@theme/post.html.twig', [
+            'page' => $post
+        ]);
     }
 }
