@@ -2,22 +2,13 @@
 
 namespace CMSilex;
 
-use CMSilex\Components\CMS;
 use CMSilex\ControllerProviders\AdminController;
 use CMSilex\ControllerProviders\AuthenticationController;
 use CMSilex\ControllerProviders\CMSController;
 use CMSilex\ControllerProviders\FrontendController;
 use CMSilex\ControllerProviders\MediaController;
-use CMSilex\ControllerProviders\MenuController;
-use CMSilex\ControllerProviders\PageController;
-use CMSilex\ControllerProviders\PostController;
 use CMSilex\Entities\CMSField;
-use CMSilex\Entities\Field;
-use CMSilex\Entities\Page;
-use CMSilex\Entities\SettingField;
-use CMSilex\Forms\Types\CMSFieldType;
 use CMSilex\Forms\Types\PageType;
-use CMSilex\Forms\Types\PostType;
 use CMSilex\Forms\Types\TemplateChoiceType;
 use CMSilex\ServiceProviders\CMSServiceProvider;
 use CMSilex\ServiceProviders\ConfigServiceProvider;
