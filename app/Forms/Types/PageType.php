@@ -52,7 +52,7 @@ class PageType extends AbstractType
                     return $qb;
                 }
             ])
-            ->add('content', TextareaType::class, ['required' => false])
+            ->add('content', TextareaType::class, ['required' => false, 'attr' => ['class' =>'ckeditor']])
             ->add('template', TemplateChoiceType::class)
         ;
 
