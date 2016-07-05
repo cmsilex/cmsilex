@@ -10,7 +10,10 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
  */
 class CMSField
 {
-    /** @ManyToOne(targetEntity="CMSilex\Entities\BlogItem") @Id */
+    /**
+     * @ManyToOne(targetEntity="CMSilex\Entities\BlogItem") @Id
+     * @JoinColumn(name="blog_item_id", referencedColumnName="id", onDelete="CASCADE")
+     */
     protected $blogItem;
 
     /** @Column @Id */

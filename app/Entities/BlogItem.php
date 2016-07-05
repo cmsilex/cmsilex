@@ -43,7 +43,7 @@ class BlogItem
     protected $template;
 
     /**
-     * @OneToMany(targetEntity="CMSilex\Entities\CMSField", mappedBy="blogItem", indexBy="att", fetch="EAGER", cascade={"all"})
+     * @OneToMany(targetEntity="CMSilex\Entities\CMSField", mappedBy="blogItem", indexBy="att", fetch="EAGER", cascade={"all"}, orphanRemoval=true)
      */
     protected $fields;
 
