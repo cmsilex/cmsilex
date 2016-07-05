@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Post extends BlogItem
 {
-    /** @ManyToMany(targetEntity="CMSilex\Entities\Category", inversedBy="post", cascade={"persist"}) */
+    /** @ManyToMany(targetEntity="CMSilex\Entities\Category", inversedBy="posts", cascade={"persist"}) */
     protected $categories;
 
     public function __construct()

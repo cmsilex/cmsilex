@@ -44,23 +44,13 @@ class FrontendController implements ControllerProviderInterface
             $urlParts = new ArrayCollection(explode('/', $url));
             $last = $urlParts->last();
             $page = $app['em']->getRepository('CMSilex\Entities\Page')->findOneBy(['slug' => $last]);
-
-            $posts = $app['em']->getRepository('CMSilex\Entities\Post')->findAll();
-
+            
             if ($page) {
                 return $app->render('@theme/page.html.twig', [
-                    'page' => $page,
-                    'posts' => $posts
+                    'page' => $page
                 ]);
             } else {
-                $post = $app['em']->getRepository('CMSilex\Entities\Post')->findOneBy(['slug' => $last]);
-
-                if ($post) {
-                    return $app->render('frontend/page.html.twig', [
-                        'page' => $post,
-                        'posts' => []
-                    ]);
-                }
+                throw new NotFoundHttpException();
             }
         }
         

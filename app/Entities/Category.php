@@ -14,7 +14,7 @@ class Category
     /** @Column(unique=true) */
     protected $name;
     
-    /** @ManyToMany(targetEntity="CMSilex\Entities\Post", mappedBy="category") */
+    /** @ManyToMany(targetEntity="CMSilex\Entities\Post", mappedBy="categories") */
     protected $posts;
 
     public function __construct()

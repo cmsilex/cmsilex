@@ -220,6 +220,11 @@ class BlogItem
         return $this->fields;
     }
 
+    public function getField($att)
+    {
+        return $this->fields->get($att);
+    }
+
     /**
      * @return mixed
      */
