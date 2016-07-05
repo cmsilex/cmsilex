@@ -2,6 +2,7 @@
 
 namespace CMSilex;
 
+use CMSilex\Components\CMS;
 use CMSilex\ControllerProviders\AdminController;
 use CMSilex\ControllerProviders\AuthenticationController;
 use CMSilex\ControllerProviders\CMSController;
@@ -10,7 +11,14 @@ use CMSilex\ControllerProviders\MediaController;
 use CMSilex\ControllerProviders\MenuController;
 use CMSilex\ControllerProviders\PageController;
 use CMSilex\ControllerProviders\PostController;
+use CMSilex\Entities\CMSField;
+use CMSilex\Entities\Field;
 use CMSilex\Entities\Page;
+use CMSilex\Entities\SettingField;
+use CMSilex\Forms\Types\CMSFieldType;
+use CMSilex\Forms\Types\PageType;
+use CMSilex\Forms\Types\PostType;
+use CMSilex\Forms\Types\TemplateChoiceType;
 use CMSilex\ServiceProviders\CMSServiceProvider;
 use CMSilex\ServiceProviders\ConfigServiceProvider;
 use CMSilex\ServiceProviders\ConverterServiceProvider;
@@ -111,7 +119,6 @@ class CMSilex extends Application
             'twig.strict_variables' => false
         ]);
 
-        $app['twig.loader.filesystem']->addPath($app['dir.base'] . "/themes/" . $app['config']['theme'], 'theme');
 
         $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig) {
             $twig->addTest(new \Twig_SimpleTest('callable',function ($variable){
@@ -126,12 +133,15 @@ class CMSilex extends Application
                 return call_user_func($callable, $params);
             }));
 
+            $twig->getExtension('core')->setDateFormat('Y/m/d', '%d days');
+
             return $twig;
         }));
 
         $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
             $types[] = new EntityType($app['manager_registry']);
-
+            $types[] = new TemplateChoiceType($app['theme']);
+            $types[] = new PageType($app['theme']);
             return $types;
         }));
 
@@ -158,6 +168,7 @@ class CMSilex extends Application
         $app->register(new ConverterServiceProvider());
 
         $app->register(new ThemeServiceProvider());
+        $app['twig.loader.filesystem']->addPath($app['dir.theme'], 'theme');
 
         $app->register(new CMSServiceProvider());
 
@@ -167,6 +178,22 @@ class CMSilex extends Application
     public function setRoutes()
     {
         $app = $this;
+        
+        $app->match('/test', function (Application $app, Request $request) {
+            $field = new CMSField();
+            $field->setAtt("site_description");
+            $field->setVal("So many lols");
+
+            $page = $app['em']->find('CMSilex\Entities\Page', 1);
+
+            $field->setBlogItem($page);
+            
+            $app['em']->persist($field);
+            $app['em']->flush();
+
+            dump($field);
+            exit;
+        });
 
         $app->mount('/', new AuthenticationController());
         $app->mount('/admin', new AdminController());

@@ -12,13 +12,16 @@ class ThemeServiceProvider implements ServiceProviderInterface
 
     public function register(Application $app)
     {
+        $app['dir.theme'] = $app['dir.base'] . "/themes/" . $app['config']['theme'];
+
         $app['theme'] = $app->share(function() use ($app) {
-            return new ThemeComponent($app['em'], $app['twig']);
+            return new ThemeComponent($app['em'], $app['twig'], $app['dir.theme']);
         });
+
     }
 
     public function boot(Application $app)
     {
-        // TODO: Implement boot() method.
+        
     }
 }

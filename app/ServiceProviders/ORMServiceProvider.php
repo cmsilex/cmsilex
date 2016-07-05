@@ -2,7 +2,9 @@
 
 namespace CMSilex\ServiceProviders;
 
+use Doctrine\Common\EventManager;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
 use Silex\Application;
@@ -30,6 +32,7 @@ class ORMServiceProvider implements ServiceProviderInterface
             $config->setProxyDir($app['orm.cache_dir']);
 
             $entityManager = EntityManager::create($app['config.database'], $config);
+            
             return $entityManager;
         });
     }

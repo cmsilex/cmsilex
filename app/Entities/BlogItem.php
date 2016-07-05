@@ -2,11 +2,13 @@
 
 namespace CMSilex\Entities;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 /**
  * @Entity
  * @InheritanceType("SINGLE_TABLE")
  * @HasLifecycleCallbacks
+ * @EntityListeners({"CMSilex\Events\Listeners\BlogItemEventListener"})
  */
 class BlogItem
 {
@@ -37,9 +39,18 @@ class BlogItem
     /** @Column(type="datetime") */
     protected $created;
 
+    /** @Column */
+    protected $template;
+
+    /**
+     * @OneToMany(targetEntity="CMSilex\Entities\CMSField", mappedBy="blogItem", indexBy="att", fetch="EAGER", cascade={"all"})
+     */
+    protected $fields;
+
     public function __construct()
     {
         $this->childPages = new ArrayCollection();
+        $this->fields = new ArrayCollection();
         $this->deleted = false;
     }
 
@@ -193,9 +204,35 @@ class BlogItem
         $page->setParentPage(null);
     }
 
-    /** @PrePersist */
-    public function prePersist()
+    public function addField(CMSField $field)
     {
-        $this->created = new \DateTime();
+        $this->fields[$field->getAtt()] = $field;
+        $field->setBlogItem($this);
+    }
+
+    public function removeField(CMSField $field)
+    {
+        $field->setBlogItem(null);
+    }
+
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * @param mixed $template
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
     }
 }

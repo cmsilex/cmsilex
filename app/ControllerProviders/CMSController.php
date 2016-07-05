@@ -44,8 +44,10 @@ class CMSController implements ControllerProviderInterface
         if ($form->isSubmitted() && $form->isValid())
         {
             $entity = $form->getData();
+
             $app['em']->persist($entity);
             $app['em']->flush();
+
             return $app->redirect($app->url('cms_edit', ['entityName' => $cmsEntity, 'id' => $entity->getId()]));
         }
 
@@ -64,6 +66,7 @@ class CMSController implements ControllerProviderInterface
 
     public function listEntityAction (CMSEntity $cmsEntity, Application $app){
         $entities = $app['em']->getRepository($cmsEntity->getClass())->findAll();
+
         return $app->render('admin/list.html.twig', [
             'columns' => $cmsEntity->getColumns(),
             'items' => $entities,

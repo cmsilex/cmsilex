@@ -21,10 +21,8 @@ class FrontendController implements ControllerProviderInterface
             ->bind('page')
         ;
 
-        $controller->get('/{year}/{month}/{day}/{slug}', 'CMSilex\ControllerProviders\FrontendController::getPostAction')
-            ->assert('year', '[0-9]{4}')
-            ->assert('month', '[0-9]{2}')
-            ->assert('day', '[0-9]{2}')
+        $controller->get('/{date}/{slug}', 'CMSilex\ControllerProviders\FrontendController::getPostAction')
+            ->assert('date', '[0-9]{4}/[0-9]{2}/[0-9]{2}')
             ->bind('post')
             ->convert('post', function ($post, Request $request) use ($app) {
                 $post = $app['em']->getRepository('CMSilex\Entities\Post')->findOneBySlug($request->get('slug'));
@@ -71,7 +69,7 @@ class FrontendController implements ControllerProviderInterface
 
     public function getPostAction (Post $post, Application $app, Request $request)
     {
-        return $app->render('@theme/post.html.twig', [
+        return $app->render('@theme/page.html.twig', [
             'page' => $post
         ]);
     }
