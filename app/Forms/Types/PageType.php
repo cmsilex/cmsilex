@@ -3,7 +3,6 @@
 namespace CMSilex\Forms\Types;
 
 use CMSilex\Components\ThemeComponent;
-use CMSilex\Entities\CMSField;
 use CMSilex\Entities\Page;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -58,7 +57,8 @@ class PageType extends AbstractType
 
         $fieldsForm = $builder->create('fields', FormType::class, [
                 'by_reference' => false,
-                'mapped' => true
+                'mapped' => true,
+                'label' => false,
             ])
         ;
 
