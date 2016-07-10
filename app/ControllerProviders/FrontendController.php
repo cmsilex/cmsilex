@@ -46,7 +46,8 @@ class FrontendController implements ControllerProviderInterface
             $page = $app['em']->getRepository('CMSilex\Entities\Page')->findOneBy(['slug' => $last]);
             
             if ($page) {
-                return $app->render('@theme/page.html.twig', [
+                $template = $page->getTemplate();
+                return $app->render('@theme/' . $template . '.html.twig', [
                     'page' => $page
                 ]);
             } else {
