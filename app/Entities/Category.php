@@ -17,6 +17,9 @@ class Category
     /** @ManyToMany(targetEntity="CMSilex\Entities\Post", mappedBy="categories") */
     protected $posts;
 
+    /** @Column(type="boolean") */
+    protected $isPrivate;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -49,6 +52,22 @@ class Category
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isPrivate()
+    {
+        return $this->isPrivate;
+    }
+
+    /**
+     * @param mixed $isPrivate
+     */
+    public function setIsPrivate($isPrivate)
+    {
+        $this->isPrivate = $isPrivate;
     }
 
     /**

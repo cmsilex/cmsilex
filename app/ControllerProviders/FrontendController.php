@@ -6,8 +6,10 @@ use CMSilex\Entities\Post;
 use Doctrine\Common\Collections\ArrayCollection;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
+use Symfony\Component\Config\Definition\Exception\ForbiddenOverwriteException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class FrontendController implements ControllerProviderInterface
@@ -30,6 +32,14 @@ class FrontendController implements ControllerProviderInterface
                 {
                     throw new ResourceNotFoundException();
                 } else {
+                    if (!$app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_FULLY')) {
+                        foreach ($post->getCategories() as $category)
+                        {
+                            if ($category->isPrivate()) {
+                                throw new NotFoundHttpException();
+                            }
+                        }
+                    }
                     return $post;
                 }
             })
