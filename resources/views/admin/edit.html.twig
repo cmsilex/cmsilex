@@ -56,6 +56,13 @@
             });
         });
 
+        $('#post_title, #page_title').on('blur', function () {
+            var slugInput = $('#post_slug, #page_slug');
+            if (!slugInput.val()){
+                slugInput.val($(this).val().replace(/\s/g, "-").toLowerCase());
+            }
+        });
+
     </script>
     <script src="/cmsilex/ckeditor/ckeditor.js"></script>
     <script>
