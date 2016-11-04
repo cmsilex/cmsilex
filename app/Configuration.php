@@ -28,6 +28,8 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->scalarNode('driver')
                         ->end()
+                        ->scalarNode('path')
+                        ->end()
                     ->end()
                 ->end()
                 ->booleanNode('debug')
