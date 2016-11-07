@@ -17,7 +17,9 @@ class CategoryType extends AbstractType
             ->add('name', TextType::class, [
                 'required' => true
             ])
-            ->add('isPrivate', CheckboxType::class)
+            ->add('isPrivate', CheckboxType::class, [
+                'required' => false
+            ])
         ;
     }
 
