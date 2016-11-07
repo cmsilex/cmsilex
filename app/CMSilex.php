@@ -15,8 +15,6 @@ use CMSilex\ServiceProviders\ConfigServiceProvider;
 use CMSilex\ServiceProviders\ConverterServiceProvider;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
-use CMSilex\ServiceProviders\RSTServiceProvider;
-use CMSilex\ServiceProviders\TextileServiceProvider;
 use CMSilex\ServiceProviders\ThemeServiceProvider;
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
@@ -27,7 +25,6 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
-use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
 use CMSilex\Entities\User;
@@ -37,10 +34,6 @@ use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 
@@ -48,14 +41,14 @@ class CMSilex extends Application
 {
     use Application\FormTrait;
     use Application\TwigTrait;
-    use Application\UrlGeneratorTrait;
     use Application\SecurityTrait;
+    use Application\UrlGeneratorTrait;
 
     public function bootstrap()
     {
         $app = $this;
 
-        $app['dir.base'] = __DIR__ . "/../../../../";
+        $app['dir.base'] = __DIR__ . "/../";
 
         $app->register(new ConfigServiceProvider());
 
@@ -64,8 +57,6 @@ class CMSilex extends Application
         ErrorHandler::register();
         ExceptionHandler::register($app['debug']);
 
-        $app->register(new UrlGeneratorServiceProvider());
-
         $app->register(new HttpFragmentServiceProvider());
         $app->register(new ServiceControllerServiceProvider());
 
@@ -73,10 +64,10 @@ class CMSilex extends Application
         $app->register(new SessionServiceProvider());
         $app->register(new SecurityServiceProvider());
 
-        $app['security.encoder.digest'] = $app->share(function ($app) {
+        $app['security.encoder.digest'] = function ($app) {
             // uses the password-compat encryption
             return new BCryptPasswordEncoder(10);
-        });
+        };
 
         $app->register(new ManagerRegistryServiceProvider());
 
@@ -111,7 +102,7 @@ class CMSilex extends Application
         ]);
 
 
-        $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig) {
+        $app['twig'] = $app->extend('twig', function (\Twig_Environment $twig) {
             $twig->addTest(new \Twig_SimpleTest('callable',function ($variable){
                 return is_callable($variable);
             }));
@@ -127,18 +118,16 @@ class CMSilex extends Application
             $twig->getExtension('core')->setDateFormat('Y/m/d', '%d days');
 
             return $twig;
-        }));
+        });
 
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+        $app['form.types'] = $app->extend('form.types', function ($types) use ($app) {
             $types[] = new EntityType($app['manager_registry']);
             $types[] = new TemplateChoiceType($app['theme']);
             $types[] = new PageType($app['theme']);
             return $types;
-        }));
+        });
 
         $app->register(new SerializerServiceProvider());
-
-        $app->register(new TextileServiceProvider());
 
         $app->register(new WebProfilerServiceProvider(), [
             'profiler.cache_dir' => './../storage/framework/cache/profiler',
@@ -146,15 +135,13 @@ class CMSilex extends Application
             'profiler.mount_prefix' => '/admin/_profiler'
         ]);
         
-        $app['finder'] = $app->share(function () {
+        $app['finder'] = function () {
             return new Finder();
-        });
+        };
 
-        $app['filesystem'] = $app->share(function () {
+        $app['filesystem'] = function () {
             return new Filesystem();
-        });
-
-        $app->register(new RSTServiceProvider());
+        };
 
         $app->register(new ConverterServiceProvider());
 

@@ -12,15 +12,17 @@ use CMSilex\Forms\Types\CategoryType;
 use CMSilex\Forms\Types\MenuType;
 use CMSilex\Forms\Types\PageType;
 use CMSilex\Forms\Types\PostType;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+
 
 class CMSServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $container)
     {
-        $app['cms'] = $app->share(function () use ($app) {
-            $cms = new CMS($app['em']);
+        $container['cms'] = function () use ($container) {
+            $cms = new CMS($container['em']);
 
             $postCmsEntity = new CMSEntity(Post::class, PostType::class);
             $postCmsEntity->addColumn('title', 'title');
@@ -41,11 +43,6 @@ class CMSServiceProvider implements ServiceProviderInterface
             $cms->addCMSEntity($categoryCmsEntity);
 
             return $cms;
-        });
-    }
-
-    public function boot(Application $app)
-    {
-
+        };
     }
 }

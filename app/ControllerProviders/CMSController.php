@@ -4,8 +4,8 @@ namespace CMSilex\ControllerProviders;
 
 use CMSilex\Components\CMSEntity;
 use CMSilex\Forms\Types\CategoryType;
+use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
-use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class CMSController implements ControllerProviderInterface

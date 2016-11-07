@@ -4,8 +4,8 @@ namespace CMSilex\ControllerProviders;
 
 use CMSilex\Entities\Post;
 use Doctrine\Common\Collections\ArrayCollection;
+use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
-use Silex\ControllerProviderInterface;
 use Symfony\Component\Config\Definition\Exception\ForbiddenOverwriteException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

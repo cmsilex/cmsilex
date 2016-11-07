@@ -1,45 +1,37 @@
 {
-    "name": "cmsilex/cmsilex",
-    "authors": [
-        {
-            "name": "Leigh Murray",
-            "email": "leighmurray@cmsilex.com"
-        }
-    ],
-    "minimum-stability":"dev",
-    "prefer-stable":true,
-    "require": {
-        "silex/silex": "^1.3",
-        "symfony/yaml": "^3.0",
-        "doctrine/orm": "^2.5",
-        "symfony/var-dumper": "^3.0",
-        "symfony/security": "^3.0",
-        "symfony/form": "^3.0",
-        "symfony/twig-bridge": "^3.0",
-        "symfony/validator": "^3.0",
-        "symfony/config": "^3.0",
-        "symfony/translation": "^3.0",
-        "symfony/intl": "^3.0",
-        "symfony/security-csrf": "^3.0",
-        "silex/web-profiler": "^1.0",
-        "symfony/doctrine-bridge": "^3.0",
-        "cmsilex/textile": "dev-master",
-        "cmsilex/config": "dev-master",
-        "symfony/finder": "^3.0",
-        "symfony/filesystem": "^3.0",
-        "cmsilex/rst": "dev-master",
-        "doctrine/dbal": "^2.5",
-        "symfony/serializer": "^3.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "CMSilex\\":"app/"
-        }
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url":  "git@github.com:cmsilex/textile.git"
-        }
-    ]
+  "name": "cmsilex/cmsilex",
+  "authors": [
+    {
+      "name": "Leigh Murray",
+      "email": "leighmurray@cmsilex.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "silex/silex": "~2.0",
+    "symfony/yaml": "^3.0",
+    "doctrine/orm": "^2.5",
+    "symfony/var-dumper": "^3.0",
+    "symfony/security": "^3.0",
+    "symfony/form": "^3.0",
+    "symfony/twig-bridge": "^3.0",
+    "symfony/validator": "^3.0",
+    "symfony/config": "^3.0",
+    "symfony/translation": "^3.0",
+    "symfony/intl": "^3.0",
+    "symfony/security-csrf": "^3.0",
+    "silex/web-profiler": "~2.0",
+    "symfony/doctrine-bridge": "^3.0",
+    "symfony/finder": "^3.0",
+    "symfony/filesystem": "^3.0",
+    "doctrine/dbal": "^2.5",
+    "symfony/serializer": "^3.0",
+    "cmsilex/config": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "CMSilex\\": "app/"
+    }
+  }
 }

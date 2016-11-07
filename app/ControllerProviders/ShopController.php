@@ -2,8 +2,8 @@
 
 namespace CMSilex\ControllerProviders;
 
+use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
-use Silex\ControllerProviderInterface;
 
 class ShopController implements ControllerProviderInterface
 {

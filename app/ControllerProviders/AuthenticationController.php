@@ -3,7 +3,8 @@
 namespace CMSilex\ControllerProviders;
 
 use CMSilex\Entities\User;
-use Silex\ControllerProviderInterface;
+
+use Silex\Api\ControllerProviderInterface;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;

@@ -6,3 +6,5 @@
 /pages
 /config
 .idea
+*.db
+/themes

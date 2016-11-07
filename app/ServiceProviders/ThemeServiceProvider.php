@@ -3,25 +3,22 @@
 namespace CMSilex\ServiceProviders;
 
 use CMSilex\Components\ThemeComponent;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+
 
 class ThemeServiceProvider implements ServiceProviderInterface
 {
     protected $em;
 
-    public function register(Application $app)
+    public function register(Container $container)
     {
-        $app['dir.theme'] = $app['dir.base'] . "/themes/" . $app['config']['theme'];
+        $container['dir.theme'] = $container['dir.base'] . "/themes/" . $container['config']['theme'];
 
-        $app['theme'] = $app->share(function() use ($app) {
-            return new ThemeComponent($app['em'], $app['twig'], $app['dir.theme']);
-        });
+        $container['theme'] = function() use ($container) {
+            return new ThemeComponent($container['em'], $container['twig'], $container['dir.theme']);
+        };
 
-    }
-
-    public function boot(Application $app)
-    {
-        
     }
 }

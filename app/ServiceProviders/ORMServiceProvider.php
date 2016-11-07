@@ -7,38 +7,34 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 class ORMServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $container)
     {
-        $app['orm.paths'] = function () {
+        $container['orm.paths'] = function () {
             return [
                 __DIR__ . '/../Entities/'
             ];
         };
 
-        $app['orm.cache_dir'] = __DIR__ . '/../../../../../storage/framework/cache/orm';
+        $container['orm.cache_dir'] = __DIR__ . '/../../../../../storage/framework/cache/orm';
 
-        $app['config.database'] = $app['config']['db'];
+        $container['config.database'] = $container['config']['db'];
 
-        $app['em'] = $app->share(function () use ($app) {
+        $container['em'] = function () use ($container) {
 
-            $config = Setup::createAnnotationMetadataConfiguration($app['orm.paths'], $app['debug']);
+            $config = Setup::createAnnotationMetadataConfiguration($container['orm.paths'], $container['debug']);
             $namingStrategy = new UnderscoreNamingStrategy();
             $config->setNamingStrategy($namingStrategy);
-            $config->setProxyDir($app['orm.cache_dir']);
+            $config->setProxyDir($container['orm.cache_dir']);
 
-            $entityManager = EntityManager::create($app['config.database'], $config);
+            $entityManager = EntityManager::create($container['config.database'], $config);
             
             return $entityManager;
-        });
-    }
-
-    public function boot(Application $app)
-    {
-
+        };
     }
 }

@@ -3,20 +3,16 @@
 namespace CMSilex\ServiceProviders;
 
 use CMSilex\ManagerRegistry;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 class ManagerRegistryServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $container)
     {
-        $app['manager_registry'] = $app->share(function () use ($app) {
-            return new ManagerRegistry($app['em']);
-        });
-    }
-
-    public function boot(Application $app)
-    {
-        // TODO: Implement boot() method.
+        $container['manager_registry'] = function () use ($container) {
+            return new ManagerRegistry($container['em']);
+        };
     }
 }
