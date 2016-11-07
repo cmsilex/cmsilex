@@ -48,7 +48,7 @@ class CMSilex extends Application
     {
         $app = $this;
 
-        $app['dir.base'] = __DIR__ . "/../";
+        $app['dir.base'] = __DIR__ . "/../../../../";
 
         $app->register(new ConfigServiceProvider());
 
