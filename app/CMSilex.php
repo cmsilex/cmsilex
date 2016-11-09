@@ -102,7 +102,7 @@ class CMSilex extends Application
         ]);
 
 
-        $app['twig'] = $app->extend('twig', function (\Twig_Environment $twig) {
+        $app->extend('twig', function (\Twig_Environment $twig) {
             $twig->addTest(new \Twig_SimpleTest('callable',function ($variable){
                 return is_callable($variable);
             }));
@@ -120,7 +120,7 @@ class CMSilex extends Application
             return $twig;
         });
 
-        $app['form.types'] = $app->extend('form.types', function ($types) use ($app) {
+        $app->extend('form.types', function ($types) use ($app) {
             $types[] = new EntityType($app['manager_registry']);
             $types[] = new TemplateChoiceType($app['theme']);
             $types[] = new PageType($app['theme']);

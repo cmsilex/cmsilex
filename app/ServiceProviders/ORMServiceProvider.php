@@ -2,20 +2,17 @@
 
 namespace CMSilex\ServiceProviders;
 
-use Doctrine\Common\EventManager;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Silex\Application;
 
 class ORMServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        $container['orm.paths'] = function () {
+        $container['orm.paths'] = function ($container) {
             return [
                 __DIR__ . '/../Entities/'
             ];

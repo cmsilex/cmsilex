@@ -6,17 +6,22 @@ use CMSilex\Entities\Menu;
 use Doctrine\ORM\EntityNotFoundException;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class ConverterServiceProvider implements ServiceProviderInterface
+class ConverterServiceProvider implements ServiceProviderInterface, BootableProviderInterface
 {
     protected $em;
 
     public function register(Container $container)
     {
-        $this->em = $container['em'];
         $container['converter'] = $this;
+    }
+
+    public function boot(Application $app)
+    {
+        $this->em = $app['em'];
     }
 
     public function convertEntity($menu, Request $request) {
