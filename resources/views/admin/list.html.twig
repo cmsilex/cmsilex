@@ -28,11 +28,11 @@
                             </td>
                         {% endfor %}
                         {% if cmsEntity.isEditable %}
-                            <td><a href="{{ url('cms_edit', {entityName: cmsEntity, id: item.id}) }}">Edit</a></td>
+                            <td><a href="{{ path('cms_edit', {entityName: cmsEntity, id: item.id}) }}">Edit</a></td>
                         {% endif %}
                         {% if cmsEntity.isDeletable %}
                             <td>
-                                <form method="post" action="{{ url('cms_delete', {entityName: cmsEntity, id: item.id}) }}">
+                                <form method="post" action="{{ path('cms_delete', {entityName: cmsEntity, id: item.id}) }}">
                                     <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this item?');">
                                 </form>
                             </td>
@@ -49,7 +49,7 @@
             {% endif %}
         </table>
         <div>
-            <a class="btn btn-primary" href="{{ url('cms_edit', {entityName: cmsEntity}) }}">New</a>
+            <a class="btn btn-primary" href="{{ path('cms_edit', {entityName: cmsEntity}) }}">New</a>
         </div>
     </div>
 {% endblock page_content %}

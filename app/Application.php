@@ -16,7 +16,7 @@ use CMSilex\ServiceProviders\ConverterServiceProvider;
 use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
 use CMSilex\ServiceProviders\ThemeServiceProvider;
-use Silex\Application;
+use Silex\Application as SilexApplication;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
@@ -37,12 +37,12 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 
-class CMSilex extends Application
+class Application extends SilexApplication
 {
-    use Application\FormTrait;
-    use Application\TwigTrait;
-    use Application\SecurityTrait;
-    use Application\UrlGeneratorTrait;
+    use SilexApplication\FormTrait;
+    use SilexApplication\TwigTrait;
+    use SilexApplication\SecurityTrait;
+    use SilexApplication\UrlGeneratorTrait;
 
     public function bootstrap()
     {
