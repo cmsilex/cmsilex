@@ -21,11 +21,21 @@ class CMSServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
+        $container['cms.get_post_url_attributes'] = $container->protect(function (Post $post) {
+            return [
+                'date' => $post->getCreated()->format('Y/m/d'),
+                'slug' => $post->getSlug()
+            ];
+        });
+
         $container['cms'] = function () use ($container) {
             $cms = new CMS($container['em']);
 
             $postCmsEntity = new CMSEntity(Post::class, PostType::class);
-            $postCmsEntity->addColumn('title', 'title');
+            $postCmsEntity->addColumn('title', function(Post $post) use ($container) {
+                $href = $container->path('post', $container['cms.get_post_url_attributes']($post));
+                return '<a href="' . $href . '">' . $post->getTitle() . '</a>';
+            });
             $postCmsEntity->addColumn('slug', 'slug');
             $cms->addCMSEntity($postCmsEntity);
 
