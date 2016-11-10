@@ -69,7 +69,7 @@ class PageType extends AbstractType
         if ($templateName)
         {
             $template = $this->themeComponent->getTemplate($templateName);
-            $fields = $template['fields'] ? $template['fields'] : [];
+            $fields = isset($template['fields']) ? $template['fields'] : [];
 
             foreach ($fields as $currentField)
             {
