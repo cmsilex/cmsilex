@@ -35,6 +35,7 @@ use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 
 class Application extends SilexApplication
@@ -156,22 +157,6 @@ class Application extends SilexApplication
     public function setRoutes()
     {
         $app = $this;
-        
-        $app->match('/test', function (Application $app, Request $request) {
-            $field = new CMSField();
-            $field->setAtt("site_description");
-            $field->setVal("So many lols");
-
-            $page = $app['em']->find('CMSilex\Entities\Page', 1);
-
-            $field->setBlogItem($page);
-            
-            $app['em']->persist($field);
-            $app['em']->flush();
-
-            dump($field);
-            exit;
-        });
 
         $app->mount('/', new AuthenticationController());
         $app->mount('/admin', new AdminController());
@@ -180,5 +165,11 @@ class Application extends SilexApplication
 
         $app->mount('/', new FrontendController());
 
+        $app->after(function (Request $request, Response $response) {
+            if (strpos($request->getPathInfo(), '/admin') === 0) {
+                $response->headers->addCacheControlDirective('must-revalidate', true);
+                $response->headers->addCacheControlDirective('no-store', true);
+            }
+        });
     }
 }
