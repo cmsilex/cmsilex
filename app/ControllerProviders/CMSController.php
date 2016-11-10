@@ -73,14 +73,17 @@ class CMSController implements ControllerProviderInterface
 
     public function listEntityAction (CMSEntity $cmsEntity, Application $app, Request $request){
         $pageNumber = $request->query->has('page') ? $request->query->get('page') : 1;
-        $limit = $request->query->has('limit') ? $request->query->get('limit') : 15;
-        $firstResult = ($pageNumber - 1) * $limit;
+        $limit = $request->query->has('limit') ? $request->query->get('limit') : $cmsEntity->getDefaultPageLimit();
 
         $qb = $app['em']->getRepository($cmsEntity->getClass())->createQueryBuilder('e');
-        $qb
-            ->setFirstResult($firstResult)
-            ->setMaxResults($limit)
-        ;
+
+        if ($limit && $limit >= 0) {
+            $qb->setMaxResults($limit);
+            $qb->setFirstResult(($pageNumber - 1) * $limit);
+        } else {
+            $limit = null;
+            $pageNumber = 1;
+        }
 
         $paginator = new Paginator($qb);
 
@@ -95,7 +98,10 @@ class CMSController implements ControllerProviderInterface
             'columns' => $cmsEntity->getColumns(),
             'items' => $entities,
             'cmsEntity' => $cmsEntity,
-            'heading' => ucwords( $cmsEntity )
+            'heading' => ucwords( $cmsEntity ),
+            'resultCount' => count($paginator),
+            'currentPage' => $pageNumber,
+            'limit' => $limit
         ]);
     }
 }

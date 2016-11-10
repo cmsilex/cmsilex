@@ -10,8 +10,9 @@ class CMSEntity
     protected $isEditable;
     protected $isCreatable;
     protected $isDeletable;
+    protected $defaultPageLimit;
 
-    public function __construct($class, $formType, $isEditable = true, $isCreatable = true, $isDeletable = true)
+    public function __construct($class, $formType, $isEditable = true, $isCreatable = true, $isDeletable = true, $defaultPageLimit = 15)
     {
         $this->class = $class;
         $this->columns = [];
@@ -19,6 +20,7 @@ class CMSEntity
         $this->isEditable = $isEditable;
         $this->isCreatable = $isCreatable;
         $this->isDeletable = $isDeletable;
+        $this->defaultPageLimit = $defaultPageLimit;
     }
 
     /**
@@ -98,6 +100,22 @@ class CMSEntity
     public function setIsDeletable($isDeletable)
     {
         $this->isDeletable = $isDeletable;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDefaultPageLimit()
+    {
+        return $this->defaultPageLimit;
+    }
+
+    /**
+     * @param int $defaultPageLimit
+     */
+    public function setDefaultPageLimit($defaultPageLimit)
+    {
+        $this->defaultPageLimit = $defaultPageLimit;
     }
 
     public function __toString()
