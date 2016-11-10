@@ -94,14 +94,18 @@ class CMSController implements ControllerProviderInterface
             $entities[] = $entity;
         }
 
+        $resultCount = count($paginator);
+        $totalPages = $limit && $limit <= $resultCount ? $resultCount/$limit : 1;
+
         return $app->render('admin/list.html.twig', [
             'columns' => $cmsEntity->getColumns(),
             'items' => $entities,
             'cmsEntity' => $cmsEntity,
             'heading' => ucwords( $cmsEntity ),
-            'resultCount' => count($paginator),
+            'resultCount' => $resultCount,
             'currentPage' => $pageNumber,
-            'limit' => $limit
+            'limit' => $limit,
+            'totalPages' => $totalPages
         ]);
     }
 }
