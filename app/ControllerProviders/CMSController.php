@@ -3,6 +3,8 @@
 namespace CMSilex\ControllerProviders;
 
 use CMSilex\Components\CMSEntity;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,8 +71,25 @@ class CMSController implements ControllerProviderInterface
         return $app->redirect($app->url('cms_list', ['entityName' => $entityName]));
     }
 
-    public function listEntityAction (CMSEntity $cmsEntity, Application $app){
-        $entities = $app['em']->getRepository($cmsEntity->getClass())->findAll();
+    public function listEntityAction (CMSEntity $cmsEntity, Application $app, Request $request){
+        $pageNumber = $request->query->has('page') ? $request->query->get('page') : 1;
+        $limit = $request->query->has('limit') ? $request->query->get('limit') : 15;
+        $firstResult = ($pageNumber - 1) * $limit;
+
+        $qb = $app['em']->getRepository($cmsEntity->getClass())->createQueryBuilder('e');
+        $qb
+            ->setFirstResult($firstResult)
+            ->setMaxResults($limit)
+        ;
+
+        $paginator = new Paginator($qb);
+
+        $entities = [];
+
+        foreach ($paginator as $entity)
+        {
+            $entities[] = $entity;
+        }
 
         return $app->render('admin/list.html.twig', [
             'columns' => $cmsEntity->getColumns(),
