@@ -3,7 +3,6 @@
 namespace CMSilex\ControllerProviders;
 
 use CMSilex\Components\CMSEntity;
-use CMSilex\Forms\Types\CategoryType;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,12 +42,18 @@ class CMSController implements ControllerProviderInterface
 
         if ($form->isSubmitted() && $form->isValid())
         {
+            $isNewEntity = ($entity->getId() == null);
             $entity = $form->getData();
 
             $app['em']->persist($entity);
             $app['em']->flush();
 
-            return $app->redirect($app->url('cms_edit', ['entityName' => $cmsEntity, 'id' => $entity->getId()]));
+            if ($isNewEntity)
+            {
+                return $app->redirect($app->url('cms_list', ['entityName' => $cmsEntity]));
+            } else {
+                return $app->redirect($app->url('cms_edit', ['entityName' => $cmsEntity, 'id' => $entity->getId()]));
+            }
         }
 
         return $app->render('admin/edit.html.twig', [

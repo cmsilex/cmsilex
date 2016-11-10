@@ -5,7 +5,6 @@ namespace CMSilex\ControllerProviders;
 use CMSilex\Entities\Setting;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
-use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
