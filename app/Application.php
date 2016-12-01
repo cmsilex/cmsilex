@@ -45,7 +45,7 @@ class Application extends SilexApplication
     use SilexApplication\SecurityTrait;
     use SilexApplication\UrlGeneratorTrait;
 
-    public function __construct(array $values)
+    public function __construct(array $values = array())
     {
         parent::__construct($values);
         $this->bootstrap();
