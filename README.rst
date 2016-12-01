@@ -1,15 +1,15 @@
 CMSilex, a simple CMS based on Silex
 ====================================
 
-CMSilex is CMS based on Silex, the PHP micro-framework::
+View the documentation on `Read the docs <http://cmsilex-docs.readthedocs.io/>`_.
+
+CMSilex is a CMS based on Silex, the PHP micro-framework::
 
     <?php
 
     require_once __DIR__.'/../vendor/autoload.php';
 
-    $app = new \CMSilex\CMSilex();
-
-    $app->bootstrap();
+    $app = new \CMSilex\Application();
 
     $app->run();
 
