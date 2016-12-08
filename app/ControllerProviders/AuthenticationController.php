@@ -5,9 +5,11 @@ namespace CMSilex\ControllerProviders;
 use CMSilex\Entities\User;
 
 use Silex\Api\ControllerProviderInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Application;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -32,21 +34,28 @@ class AuthenticationController implements ControllerProviderInterface
 
     public function loginAction (Application $app, Request $request) {
         $form = $app['form.factory']->createNamedBuilder(null)
-            ->add('_username')
-            ->add('_password')
-            ->add('submit', SubmitType::class)
+            ->add('_username', TextType::class, [
+                'data' => $app['session']->get('_security.last_username')
+            ])
+            ->add('_password', PasswordType::class)
+            ->add('_remember_me', CheckboxType::class, [
+                'required' => false,
+                'data' => true
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Login'
+            ])
             ->setAction($app->url('login_check'))
             ->getForm()
         ;
 
-        $form->handleRequest($request);
+        //$form->handleRequest($request);
 
         $form = $form->createView();
 
         return $app->render('authentication/login.html.twig', [
             'form'          => $form,
-            'error'         => $app['security.last_error']($request),
-            'last_username' => $app['session']->get('_security.last_username'),
+            'error'         => $app['security.last_error']($request)
         ]);
     }
 

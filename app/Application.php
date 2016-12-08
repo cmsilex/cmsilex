@@ -17,8 +17,10 @@ use CMSilex\ServiceProviders\ManagerRegistryServiceProvider;
 use CMSilex\ServiceProviders\ORMServiceProvider;
 use CMSilex\ServiceProviders\ThemeServiceProvider;
 use Silex\Application as SilexApplication;
+use Silex\Provider\CsrfServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
+use Silex\Provider\RememberMeServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SerializerServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -70,6 +72,8 @@ class Application extends SilexApplication
         $app->register(new ORMServiceProvider());
         $app->register(new SessionServiceProvider());
         $app->register(new SecurityServiceProvider());
+        $app->register(new RememberMeServiceProvider());
+        $app->register(new CsrfServiceProvider());
 
         $app['security.encoder.digest'] = function ($app) {
             // uses the password-compat encryption
@@ -86,6 +90,9 @@ class Application extends SilexApplication
                 'users' => function () use ($app) {
                     return new EntityUserProvider($app['manager_registry'], User::class, 'username');
                 },
+                'remember_me' => array(
+                    'key' => 'r12cJffgrWhJTTWsxmtr781'
+                ),
                 'anonymous' => true,
             ),
         );
@@ -107,7 +114,6 @@ class Application extends SilexApplication
             ],
             'twig.strict_variables' => false
         ]);
-
 
         $app->extend('twig', function (\Twig_Environment $twig) {
             $twig->addTest(new \Twig_SimpleTest('callable',function ($variable){
