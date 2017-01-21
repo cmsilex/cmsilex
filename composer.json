@@ -8,6 +8,7 @@
   ],
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "bin": ["bin/cmsilex"],
   "require": {
     "silex/silex": "~2.0",
     "symfony/yaml": "^3.0",
@@ -24,14 +25,15 @@
     "silex/web-profiler": "~2.0",
     "symfony/doctrine-bridge": "^3.0",
     "symfony/finder": "^3.0",
-    "symfony/filesystem": "^3.0",
+    "symfony/filesystem": "^3.2",
     "doctrine/dbal": "^2.5",
     "symfony/serializer": "^3.0",
-    "cmsilex/config": "dev-master"
+    "cmsilex/config": "dev-master",
+    "symfony/console": "^3.2"
   },
   "autoload": {
     "psr-4": {
-      "CMSilex\\": "app/"
+      "CMSilex\\": "lib/"
     }
   }
 }
